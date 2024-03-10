@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
-    username: {
+    fullName: {
         type: String,
         required: true,
         unique: true,
@@ -13,14 +13,18 @@ const userSchema = new Schema({
         unique: true,
         match: [/.+@.+\..+/, 'Must use a valid email address'],
     },
+    phone: {
+      type: String,
+      required: true,
+  },
     password: {
         type: String,
         required: true,
     },
-    post: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-      }]
+    position: {
+      type: String,
+      required: true,
+    }
 },
 {
     toJSON: {
