@@ -1,0 +1,17 @@
+.menu {
+    display: flex;
+    justify-content: center;
+    align-content: right;
+    flex-direction: row;
+}
+
+.highlight {
+    background-color: black;
+    color: white;
+}
+
+.menuBarText {
+    padding: 8px;
+    margin: 0 8px;
+    font-size: 18px;
+}

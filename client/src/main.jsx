@@ -14,6 +14,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      }, {
+        path: '/login-or-signup',
+        element: <Portal />
+      }, {
+        path: '/me',
+        element: <Profile />
+      }, {
+        path: '/reservations',
+        element: <Reservations />
+      }, {
+        path: '/reservations/:reservationId',
+        element: <Reservation />
       }
     ]
   },
