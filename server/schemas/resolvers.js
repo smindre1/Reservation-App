@@ -26,6 +26,21 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    updateUser: async (parent, context) => {
+      if (context.user) {
+
+        const user = await User.findOneAndUpdate({ _id: context.user._id }, context.user );
+
+        return user;
+      }
+      throw AuthenticationError("You need to be logged in!");
+    },
+    deleteUser: async (parent, { userId }) => {
+      const user = await User.findOneAndDelete({
+          _id: userId,
+        });
+      return user;
+    },
     login: async (parent, { phone = null, email = null, password }) => {
       const key = phone || email;
       const user = await User.findOne({ key });
@@ -43,24 +58,8 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    updateUser: async (parent, context) => {
-      if (context.user) {
-
-        const user = await User.findOneAndUpdate({ _id: context.user._id }, context.user );
-
-        return user;
-      }
-      throw AuthenticationError("You need to be logged in!");
-    },
-
     addReservation: async (parent, { name, email, phone, appointmentTime, services, specialRequests, payment }) => {
       const reservation = await Reservation.create({ name, email, phone, appointmentTime, services, specialRequests, payment });
-      return reservation;
-    },
-    cancelReservation: async (parent, { reservationId }) => {
-      const reservation = await Reservation.findOneAndDelete({
-          _id: reservationId,
-        });
       return reservation;
     },
     updateReservation: async (parent, context) => {
@@ -72,6 +71,13 @@ const resolvers = {
         return reservation;
       }
     },
+    cancelReservation: async (parent, { reservationId }) => {
+      const reservation = await Reservation.findOneAndDelete({
+          _id: reservationId,
+        });
+      return reservation;
+    },
+
   },
 };
 

@@ -63,13 +63,15 @@ const typeDefs = `
     type Mutation {
         addUser(fullName: String!, email: String!, phone: String!, password: String!, position: String!): Auth
 
-        updateUser(fullName: String!, email: String!, phone: String!, password: String!, position: String!): Auth
+        updateUser($userId: ID!, fullName: String, email: String, phone: String, password: String, position: String): Auth
+
+        deleteUser(userId: ID!): User
 
         login(phone: String, email: String, password: String!): Auth
 
         addReservation(name: String!, email: String!, phone: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
 
-        updateReservation(name: String!, email: String!, phone: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
+        updateReservation(reservationId: ID!, name: String!, email: String!, phone: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
 
         cancelReservation(reservationId: ID!): Reservation
     }
