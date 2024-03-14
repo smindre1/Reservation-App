@@ -4,6 +4,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css';
 
 import App from './App.jsx';
+import Home from './pages/Home.jsx';
+import Portal from './pages/Portal.jsx';
+// import Profile from './pages/Profile.jsx';
+// import Reservation from './pages/Reservation.jsx';
+// import Reservations from './pages/Reservations.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,16 +22,17 @@ const router = createBrowserRouter([
       }, {
         path: '/login-or-signup',
         element: <Portal />
-      }, {
-        path: '/me',
-        element: <Profile />
-      }, {
-        path: '/reservations',
-        element: <Reservations />
-      }, {
-        path: '/reservations/:reservationId',
-        element: <Reservation />
       }
+      // , {
+      //   path: '/me',
+      //   element: <Profile />
+      // }, {
+      //   path: '/reservations',
+      //   element: <Reservations />
+      // }, {
+      //   path: '/reservations/:reservationId',
+      //   element: <Reservation />
+      // }
     ]
   },
 ]);
