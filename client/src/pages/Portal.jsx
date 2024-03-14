@@ -1,5 +1,5 @@
-import Login from "../components/Login";
-import SignUp from "../components/Signup";
+import Login from "../components/LoginForm";
+import SignUp from "../components/SignupForm";
 
 const Portal = () => {
 
