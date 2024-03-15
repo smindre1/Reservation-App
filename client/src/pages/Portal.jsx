@@ -4,7 +4,7 @@ import SignUp from "../components/SignupForm";
 const Portal = () => {
 
   return (
-    <section>
+    <section className="portal">
         <Login />
         <SignUp />
     </section>

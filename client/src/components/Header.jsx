@@ -21,11 +21,18 @@ function Header() {
     // {home ? "highlight menuBarText" : "menuBarText"}
     return (
     <header>
-    <nav className="menu">
-        <a href="/" className={home ? "highlight menuBarText" : "menuBarText"}>Home</a>
-        <a href="/login-or-signup" className={portal ? "highlight menuBarText" : "menuBarText"}>Login/Signup</a>
-        <a href="/reservations" className={reservations ? "highlight menuBarText" : "menuBarText"}>Reservations</a>
-    </nav>
+        {/* if user is logged in show profile and logout buttons */}
+        {Auth.loggedIn() ? (
+            <nav className="menu">
+            <a href="/" className={home ? "highlight menuBarText" : "menuBarText"}>Home</a>
+            <a href="/reservations" className={reservations ? "highlight menuBarText" : "menuBarText"}>Reservations</a>
+            <a href="/" className="menuBarText" onClick={Auth.logout}>Logout</a>
+            </nav>
+            ) : (
+            <nav className="menu">
+                <a href="/login-or-signup" className={portal ? "highlight menuBarText" : "menuBarText"}>Login/Signup</a>
+            </nav>
+        )}
     </header>
     );
   }

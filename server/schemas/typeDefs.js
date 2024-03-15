@@ -22,15 +22,15 @@ const typeDefs = `
     type Services {
         type: String!
         client: String!
-        price: Number!
+        price: Int!
     }
 
     type Payment {
         _id: ID!
         cardOwner: String!
-        cardNumber: Number!
-        cardExpiration: Number!
-        securityCode: Number!
+        cardNumber: Int!
+        cardExpiration: Int!
+        securityCode: Int!
         billingAddress: String!
     }
 
@@ -42,14 +42,14 @@ const typeDefs = `
     input serviceData {
         type: String!
         client: String!
-        price: Number!
+        price: Int!
     }
 
     input paymentData {
         cardOwner: String!
-        cardNumber: Number!
-        cardExpiration: Number!
-        securityCode: Number!
+        cardNumber: Int!
+        cardExpiration: Int!
+        securityCode: Int!
         billingAddress: String!
     }
 
@@ -63,7 +63,7 @@ const typeDefs = `
     type Mutation {
         addUser(fullName: String!, email: String!, phone: String!, password: String!, position: String!): Auth
 
-        updateUser($userId: ID!, fullName: String, email: String, phone: String, password: String, position: String): Auth
+        updateUser(userId: ID!, fullName: String, email: String, phone: String, password: String, position: String): Auth
 
         deleteUser(userId: ID!): User
 

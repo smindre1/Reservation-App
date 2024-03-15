@@ -42,8 +42,9 @@ const resolvers = {
       return user;
     },
     login: async (parent, { phone = null, email = null, password }) => {
-      const key = phone || email;
-      const user = await User.findOne({ key });
+      var user;
+      //It will check if a phone number is provided, if not it will search based on the email input.
+      phone ? user = await User.findOne({ phone }) : user = await User.findOne({ email });
 
       if (!user) {
         throw AuthenticationError;
@@ -52,6 +53,7 @@ const resolvers = {
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
+        console("Incorrect Password");
         throw AuthenticationError;
       }
 

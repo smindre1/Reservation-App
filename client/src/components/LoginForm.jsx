@@ -84,8 +84,8 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="contactForm" autoComplete="off" onSubmit={handleSubmit}>
-      {/* <h2>Contact</h2> */}
+    <form className="loginForm" autoComplete="off" onSubmit={handleSubmit}>
+      <h2>Login</h2>
       <div ref={divId} className="formDiv">
         <div ref={emailId} className="flexColumn formSection">
           <input className="formFields" type="text" placeholder="Email" autoComplete="off" value={email} onChange={(e) => {setEmail(e.target.value); handleChange(e)}} />
