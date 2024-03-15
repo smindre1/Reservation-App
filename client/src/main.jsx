@@ -6,6 +6,7 @@ import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
 import Portal from './pages/Portal.jsx';
+import Employees from './pages/Employees.jsx';
 // import Profile from './pages/Profile.jsx';
 // import Reservation from './pages/Reservation.jsx';
 // import Reservations from './pages/Reservations.jsx';
@@ -22,7 +23,10 @@ const router = createBrowserRouter([
       }, {
         path: '/login-or-signup',
         element: <Portal />
-      }
+      }, {
+          path: '/employee-roster',
+          element: <Employees />
+        },
       // , {
       //   path: '/me',
       //   element: <Profile />
