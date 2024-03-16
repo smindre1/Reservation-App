@@ -56,20 +56,7 @@ export const ADD_RESERVATION = gql`
       email
       phone
       appointmentTime
-      services {
-        type
-        client
-        price
-      }
       specialRequests
-      payment {
-        _id
-        cardOwner
-        cardNumber
-        cardExpiration
-        securityCode
-        billingAddress
-      }
     }
   }
 `;

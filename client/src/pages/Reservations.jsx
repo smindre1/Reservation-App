@@ -1,6 +1,6 @@
 // import { Link } from 'react-router-dom';
 import {useQuery} from '@apollo/client'
-import { GET_RESERVATIONS, GET_RESERVATION } from '../../utils/queries';
+import { GET_RESERVATIONS } from '../../utils/queries';
 import { useState, useEffect } from 'react';
 import "../../src/index.css";
 

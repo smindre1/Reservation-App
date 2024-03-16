@@ -11,7 +11,6 @@ const LoginForm = () => {
   const emailId = useRef(null);
   const numberId = useRef(null);
   const passwordId = useRef(null);
-  const divId = useRef(null);
 
   const [login, { error, data }] = useMutation(LOGIN_EMPLOYEE);
 
@@ -86,7 +85,7 @@ const LoginForm = () => {
   return (
     <form className="loginForm" autoComplete="off" onSubmit={handleSubmit}>
       <h2>Login</h2>
-      <div ref={divId} className="formDiv">
+      <div className="formDiv">
         <div ref={emailId} className="flexColumn formSection">
           <input className="formFields" type="text" placeholder="Email" autoComplete="off" value={email} onChange={(e) => {setEmail(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Email cannot be blank</p>
