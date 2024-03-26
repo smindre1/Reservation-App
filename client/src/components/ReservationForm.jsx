@@ -7,6 +7,7 @@ const ReservationForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
+  const [day, setDay] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [services, setServices] = useState([]);
   const [serviceType, setServiceType] = useState("");
@@ -22,6 +23,7 @@ const ReservationForm = () => {
   const nameId = useRef(null);
   const emailId = useRef(null);
   const numberId = useRef(null);
+  const dayId = useRef(null);
   const appointmentTimeId = useRef(null);
   const servicesId = useRef(null);
   const specialRequestsId = useRef(null);
@@ -31,7 +33,7 @@ const ReservationForm = () => {
 
   const checkForm = () => {
     //Creates an array of each form field
-    const items = [{value: name, id: nameId}, {value: email, id: emailId}, {value: number, id: numberId}, {value: appointmentTime, id: appointmentTimeId}];
+    const items = [{value: name, id: nameId}, {value: email, id: emailId}, {value: number, id: numberId}, {value: day, id: dayId}, {value: appointmentTime, id: appointmentTimeId}];
     //Checks that each field has content, otherwise changes to error state
     items.forEach((item) => {
       if(item.value == "") {
@@ -82,12 +84,12 @@ const ReservationForm = () => {
     console.log(typeof intPrice, "price Int?");
     setServicePrice(intPrice)
     //An empty field will prevent the form from submitting
-    if(name == "" || email == "" || number == "" || appointmentTime == "") {
+    if(name == "" || email == "" || number == "" || day == "" || appointmentTime == "") {
       setSuccess(false);
       e.stopPropagation();
     } else {
       //The payment is being left as a default N/A for testing
-      const reservationFormData = { name: name, email: email, phone: number, appointmentTime: appointmentTime, services: {type: serviceType, client: serviceClient, price: intPrice}, specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
+      const reservationFormData = { name: name, email: email, phone: number, day: day, appointmentTime: appointmentTime, services: {type: serviceType, client: serviceClient, price: intPrice}, specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
 
       try {
         const { data } = await addReservation({
@@ -101,6 +103,7 @@ const ReservationForm = () => {
       setEmail("");
       setNumber("");
       setAppointmentTime("");
+      setDay("");
       setServices([]);
       localStorage.removeItem("services");
       setSpecialRequests("Invalid");
@@ -129,8 +132,12 @@ const ReservationForm = () => {
         </div>
       </div>
       <div className="flexColumn">
+        <div ref={dayId} className="flexColumn">
+          <input className="formFields" type="text" placeholder="Date" autoComplete="off" value={day} onChange={(e) => {setDay(e.target.value); handleChange(e)}} />
+          <p className="errorTxt hide">Please choose an available Day</p>
+        </div>
         <div ref={appointmentTimeId} className="flexColumn">
-          <input className="formFields" type="text" placeholder="Date/Time" autoComplete="off" value={appointmentTime} onChange={(e) => {setAppointmentTime(e.target.value); handleChange(e)}} />
+          <input className="formFields" type="text" placeholder="Appointment Time" autoComplete="off" value={appointmentTime} onChange={(e) => {setAppointmentTime(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div>
 

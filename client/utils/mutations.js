@@ -49,12 +49,13 @@ export const DEL_EMPLOYEE = gql`
 `;
 
 export const ADD_RESERVATION = gql`
-  mutation addReservation($name: String!, $email: String!, $phone: String!, $appointmentTime: String!, $services: serviceData!, $specialRequests: String, $payment: paymentData!) {
-    addReservation(name: $name, email: $email, phone: $phone, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
+  mutation addReservation($name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: String!, $services: serviceData!, $specialRequests: String, $payment: paymentData!) {
+    addReservation(name: $name, email: $email, phone: $phone, day: $day, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
       _id
       name
       email
       phone
+      day
       appointmentTime
       specialRequests
     }
@@ -62,12 +63,13 @@ export const ADD_RESERVATION = gql`
 `;
 
 export const UPDATE_RESERVATION = gql`
-  mutation updateReservation($reservationId: ID!, $name: String!, $email: String!, $phone: String!, $appointmentTime: String!, $services: serviceData!, $specialRequests: String, $payment: paymentData!) {
-    updateReservation(reservationId: $reservationId, name: $name, email: $email, phone: $phone, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
+  mutation updateReservation($reservationId: ID!, $name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: String!, $services: serviceData!, $specialRequests: String, $payment: paymentData!) {
+    updateReservation(reservationId: $reservationId, name: $name, email: $email, phone: $phone, day: $day, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
       _id
       name
       email
       phone
+      day
       appointmentTime
       services {
         type
@@ -94,6 +96,7 @@ export const DEL_RESERVATION = gql`
         name
         email
         phone
+        day
         appointmentTime
         services {
           type

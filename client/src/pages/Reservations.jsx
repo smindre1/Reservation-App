@@ -10,8 +10,18 @@ const Reservations = () => {
     const { loading: wait, error, data: reservationRoster} = useQuery(GET_RESERVATIONS);
 
     const reservationSchedule = () => {   
-        const reservations = reservationRoster?.users || [];
-        setRoster(reservations);
+        const reservations = reservationRoster?.reservations || [];
+        console.log(reservationRoster?.reservations, "roster");
+        var sortedList;
+        if(reservationRoster?.reservations) {
+            sortedList = [...reservations];
+            sortedList = sortedList.sort((a, b) => {
+                return (Number(a.day) - Number(b.day));
+            });
+            console.log(sortedList, "Sorted List");
+            setRoster(sortedList);
+        } else {
+        setRoster(reservations);}
     };
 
     useEffect(() => {
@@ -25,6 +35,10 @@ const Reservations = () => {
         window.location.replace(`/reservations/${id}`);
     }
 
+
+    
+    
+
     return(
         <div className='center'>
             {/* <div className='lostfound'>
@@ -32,26 +46,33 @@ const Reservations = () => {
             </div> */}
             {wait ? <h2>Loading...</h2> : null}
             {loadRoster.length
-            ? <p className='alignText'>Viewing {loadRoster.length}{loadRoster.length === 1 ? 'Reservation' : 'Reservations'}:</p>
+            ? <p className='alignText'>Viewing {loadRoster.length} {loadRoster.length === 1 ? 'Reservation' : 'Reservations'}:</p>
             : <p className='alignText'>There are no Reservations Currently</p>}
             {loadRoster.map((reservation) => {
                 return (
-                <div className='postLayout' key={reservations._id} reservationid={reservations._id} onClick={goToReservation}>
-                    <h1 className='alignText'>Client's Name: {reservation?.name || "No name"}</h1>
-                    <h2 className='alignText'>Email: {reservation?.email || "none"}</h2>
-                    <p className='alignText'>Phone Number: {reservation?.phone || "none"}</p>
-                    <p className='alignText'>Appointment Time: {reservation?.appointmntTime || "none"}</p>
-                    <p>Service(s):</p>
-                    {reservation?.services.map((service) => {
+                <div className='clientReservationCard' key={reservation._id} reservationid={reservation._id} onClick={goToReservation}>
+                    <p className='cardText'>{reservation?.appointmentTime || "none"} (Appointment Time)</p>
+                    <p className='cardText bold'>Client's Name: {reservation?.name || "No name"}</p>
+                    <p className='cardText bold'>Email: {reservation?.email || "none"}</p>
+                    <p className='cardText'>Phone Number: {reservation?.phone || "none"}</p>
+                    <p className='cardText'>Service(s):</p>
+                    {/* {reservation.services.forEach((service) => {
                         return (
                         <div>
                             <p>{service.type}</p>
                             <p>For: {service.client}</p>
                             <p>${service.price}</p>
                         </div>
-                        )})}
-                    {reservation.specialRequests ? <p>Special Requests: {reservation.specialRequests}</p> : null}
+                        )})} */}
                     
+                    <div className='serviceItemCard'>
+                        <p className='cardText'>{reservation.services.type}</p>
+                        <p className='cardText'>For: {reservation.services.client}</p>
+                        <p className='cardText'>${reservation.services.price}</p>
+                    </div>
+                        
+                    {reservation.specialRequests ? <p className='cardText'>Special Requests: <br></br>{reservation.specialRequests}</p> : null}
+                    <p className='cardText'>Date: {reservation?.day || "none"}</p>
                 </div>
                 );
             })}

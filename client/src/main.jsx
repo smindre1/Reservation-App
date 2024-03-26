@@ -7,9 +7,9 @@ import App from './App.jsx';
 import Home from './pages/Home.jsx';
 import Portal from './pages/Portal.jsx';
 import Employees from './pages/Employees.jsx';
-// import Profile from './pages/Profile.jsx';
-// import Reservation from './pages/Reservation.jsx';
-// import Reservations from './pages/Reservations.jsx';
+import Profile from './pages/Profile.jsx';
+import Reservation from './pages/Reservation.jsx';
+import Reservations from './pages/Reservations.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,17 +26,16 @@ const router = createBrowserRouter([
       }, {
           path: '/employee-roster',
           element: <Employees />
-        },
-      // , {
-      //   path: '/me',
-      //   element: <Profile />
-      // }, {
-      //   path: '/reservations',
-      //   element: <Reservations />
-      // }, {
-      //   path: '/reservations/:reservationId',
-      //   element: <Reservation />
-      // }
+      }, {
+        path: '/me',
+        element: <Profile />
+      }, {
+        path: '/reservations',
+        element: <Reservations />
+      }, {
+        path: '/reservations/:reservationId',
+        element: <Reservation />
+      }
     ]
   },
 ]);

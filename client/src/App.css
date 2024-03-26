@@ -20,6 +20,10 @@ body {
     font-size: 18px;
 }
 
+.bold {
+    font-weight: 900;
+}
+
 /* ----------------------- Portal ------------------------------ */
 .portal {
     display: flex;
@@ -44,4 +48,24 @@ body {
 
 .signupForm {
     margin: 0 0 0 5vw;
+}
+
+/* ----------------------- Reservations Page ------------------------------ */
+
+.clientReservationCard {
+    background-color: #cccccc;
+    padding: 9px 0 9px 18px;
+    margin: 0 0 18px 0;
+}
+
+.clientName {
+
+}
+
+.cardText {
+    font-size: 18px;
+}
+
+.serviceItemCard {
+    border-top: dotted black 2px;
 }

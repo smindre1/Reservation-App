@@ -13,8 +13,9 @@ const typeDefs = `
         name: String!
         email: String!
         phone: String!
+        day: String!
         appointmentTime: String!
-        services: [Services]
+        services: Services
         specialRequests: String
         payment: Payment
     }
@@ -69,9 +70,9 @@ const typeDefs = `
 
         login(phone: String, email: String, password: String!): Auth
 
-        addReservation(name: String!, email: String!, phone: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
+        addReservation(name: String!, email: String!, phone: String!, day: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
 
-        updateReservation(reservationId: ID!, name: String!, email: String!, phone: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
+        updateReservation(reservationId: ID!, name: String!, email: String!, phone: String!, day: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
 
         cancelReservation(reservationId: ID!): Reservation
     }

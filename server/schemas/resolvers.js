@@ -13,7 +13,7 @@ const resolvers = {
       throw AuthenticationError;
     },
     reservations: async () => {
-      return Reservation.find();
+      return Reservation.find().populate("services");
     },
     reservation: async (parent, { reservationId }) => {
       return Reservation.findById(reservationId);
@@ -60,8 +60,8 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addReservation: async (parent, { name, email, phone, appointmentTime, services, specialRequests, payment }) => {
-      const reservation = await Reservation.create({ name, email, phone, appointmentTime, services, specialRequests, payment });
+    addReservation: async (parent, { name, email, phone, day, appointmentTime, services, specialRequests, payment }) => {
+      const reservation = await Reservation.create({ name, email, phone, day, appointmentTime, services, specialRequests, payment });
       return reservation;
     },
     updateReservation: async (parent, context) => {

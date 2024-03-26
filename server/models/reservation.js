@@ -13,6 +13,10 @@ const reservationSchema = new Schema({
         type: String,
         required: true,
     },
+    day: {
+        type: String,
+        required: true,
+    },
     appointmentTime: {
         type: String,
         required: true,

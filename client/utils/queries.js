@@ -25,21 +25,21 @@ export const GET_ME = gql`
 `;
 
 export const GET_RESERVATIONS = gql`
-  query getReservations {
-    reservations {
-      _id
-      name
-      email
-      phone
-      appointmentTime
-      services {
-        type
-        client
-        price
-      }
-      specialRequests
+query getReservations {
+  reservations {
+    day
+    appointmentTime
+    email
+    name
+    phone
+    services {
+      client
+      price
+      type
     }
+    specialRequests
   }
+}
 `;
 
 export const GET_RESERVATION = gql`
@@ -49,6 +49,7 @@ export const GET_RESERVATION = gql`
         name
         email
         phone
+        day
         appointmentTime
         services {
           type
