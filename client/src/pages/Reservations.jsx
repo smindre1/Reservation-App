@@ -19,7 +19,9 @@ const Reservations = () => {
                 return (Number(a.day) - Number(b.day));
             });
             console.log(sortedList, "Sorted List");
+            
             setRoster(sortedList);
+            console.log(reservations, "ummm");
         } else {
         setRoster(reservations);}
     };
@@ -56,20 +58,16 @@ const Reservations = () => {
                     <p className='cardText bold'>Email: {reservation?.email || "none"}</p>
                     <p className='cardText'>Phone Number: {reservation?.phone || "none"}</p>
                     <p className='cardText'>Service(s):</p>
-                    {/* {reservation.services.forEach((service) => {
+
+                    {reservation.services.map((service) => {
                         return (
-                        <div>
-                            <p>{service.type}</p>
-                            <p>For: {service.client}</p>
-                            <p>${service.price}</p>
+                        <div className='serviceItemCard'>
+                            <p className='cardText'>{service.type}</p>
+                            <p className='cardText'>For: {service.client}</p>
+                            <p className='cardText'>${service.price}</p>
                         </div>
-                        )})} */}
-                    
-                    <div className='serviceItemCard'>
-                        <p className='cardText'>{reservation.services.type}</p>
-                        <p className='cardText'>For: {reservation.services.client}</p>
-                        <p className='cardText'>${reservation.services.price}</p>
-                    </div>
+                        )
+                    })}
                         
                     {reservation.specialRequests ? <p className='cardText'>Special Requests: <br></br>{reservation.specialRequests}</p> : null}
                     <p className='cardText'>Date: {reservation?.day || "none"}</p>

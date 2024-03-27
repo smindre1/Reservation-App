@@ -49,7 +49,7 @@ export const DEL_EMPLOYEE = gql`
 `;
 
 export const ADD_RESERVATION = gql`
-  mutation addReservation($name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: String!, $services: serviceData!, $specialRequests: String, $payment: paymentData!) {
+  mutation addReservation($name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: String!, $services: [serviceData!], $specialRequests: String, $payment: paymentData!) {
     addReservation(name: $name, email: $email, phone: $phone, day: $day, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
       _id
       name
@@ -115,3 +115,119 @@ export const DEL_RESERVATION = gql`
     }
   }
 `;
+
+// export const ADD_YEAR = gql`
+//   mutation addYear($year: Int!, $January: [Days]!, $February: [Days]!, $March: [Days]!, $April: [Days]!, $May: [Days]!, $June: [Days]!, $July: [Days]!, $August: [Days]!, $September: [Days]!, $October: [Days]!, $November: [Days]!, $December: [Days]!) {
+//     addReservation(year: $year, January: $January, February: $February, March: $March, April: $April, May: $May, June: $June, July: $July, August: $August, September: $September, October: $October, November: $November, December: $December) {
+//       year
+//       January {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       February {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       March {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       April {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       May {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       June {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       July {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       August {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       September {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       October {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       November {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       December {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//     }
+//   }
+// `;

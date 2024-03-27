@@ -68,3 +68,119 @@ export const GET_RESERVATION = gql`
     }
   }
 `;
+
+// export const GET_SCHEDULE = gql`
+//   query schedule {
+//     schedule {
+//       year
+//       January {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       February {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       March {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       April {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       May {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       June {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       July {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       August {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       September {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       October {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       November {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//       December {
+//         day
+//         weekday
+//         open
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//     }
+//   }
+// `;

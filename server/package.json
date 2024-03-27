@@ -4,7 +4,7 @@
     "main": "server.js",
     "scripts": {
       "start": "node server.js",
-      "seed": "",
+      "seed": "node seeder/seed.js",
       "watch": "nodemon server.js"
     },
     "license": "GNU GENERAL PUBLIC LICENSE",

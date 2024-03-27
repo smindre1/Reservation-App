@@ -15,7 +15,7 @@ const typeDefs = `
         phone: String!
         day: String!
         appointmentTime: String!
-        services: Services
+        services: [Services]
         specialRequests: String
         payment: Payment
     }
@@ -40,6 +40,46 @@ const typeDefs = `
         user: User
     }
 
+    type Schedule {
+        year: Int!
+        January: [Days]!
+        February: [Days]!
+        March: [Days]!
+        April: [Days]!
+        May: [Days]!
+        June: [Days]!
+        July: [Days]!
+        August: [Days]!
+        September: [Days]!
+        October: [Days]!
+        November: [Days]!
+        December: [Days]!
+    }
+
+    type Days {
+        day: Int!
+        weekday: String!
+        open: Boolean!
+        timeSlots: [timeSlots]!
+    }
+
+    type timeSlots {
+        time: String!
+        available: Boolean!
+    }
+
+    input timeSlotData {
+        time: String!
+        available: Boolean!
+    }
+
+    input DayData {
+        day: Int!
+        weekday: String!
+        open: Boolean!
+        timeSlots: timeSlotData!
+    }
+
     input serviceData {
         type: String!
         client: String!
@@ -59,6 +99,7 @@ const typeDefs = `
         me: User
         reservations: [Reservation]
         reservation(reservationId: ID!): Reservation
+        schedule: [Schedule]
     }
 
     type Mutation {
@@ -70,11 +111,15 @@ const typeDefs = `
 
         login(phone: String, email: String, password: String!): Auth
 
-        addReservation(name: String!, email: String!, phone: String!, day: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
+        addReservation(name: String!, email: String!, phone: String!, day: String!, appointmentTime: String!, services: [serviceData!], specialRequests: String, payment: paymentData!): Reservation
 
         updateReservation(reservationId: ID!, name: String!, email: String!, phone: String!, day: String!, appointmentTime: String!, services: serviceData!, specialRequests: String, payment: paymentData!): Reservation
 
         cancelReservation(reservationId: ID!): Reservation
+
+        addYear(year: Int!, January: [DayData]!, February: [DayData]!, March: [DayData]!, April: [DayData]!, May: [DayData]!, June: [DayData]!, July: [DayData]!, August: [DayData]!, September: [DayData]!, October: [DayData]!, November: [DayData]!, December: [DayData]!): Schedule
+
+
     }
 `;
 

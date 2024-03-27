@@ -89,7 +89,7 @@ const ReservationForm = () => {
       e.stopPropagation();
     } else {
       //The payment is being left as a default N/A for testing
-      const reservationFormData = { name: name, email: email, phone: number, day: day, appointmentTime: appointmentTime, services: {type: serviceType, client: serviceClient, price: intPrice}, specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
+      const reservationFormData = { name: name, email: email, phone: number, day: day, appointmentTime: appointmentTime, services: [{type: serviceType, client: serviceClient, price: intPrice}], specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
 
       try {
         const { data } = await addReservation({

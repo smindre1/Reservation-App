@@ -10,6 +10,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -19,7 +23,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -30,6 +34,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -39,7 +47,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -50,6 +58,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -59,7 +71,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -70,6 +82,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -79,7 +95,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -90,6 +106,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -99,7 +119,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -110,6 +130,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -119,7 +143,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -130,6 +154,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -139,7 +167,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -150,6 +178,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -159,7 +191,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -170,6 +202,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -179,7 +215,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -190,6 +226,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -199,7 +239,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -210,6 +250,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -219,7 +263,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }
@@ -230,6 +274,10 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
+        weekday: {
+            type: String,
+            required: true,
+        },
         open: {
             type: Boolean,
             required: true,
@@ -239,7 +287,7 @@ const scheduleeSchema = new Schema({
                 type: String,
                 required: true,
             },
-            availble: {
+            available: {
                 type: Boolean,
                 required: true,
             }

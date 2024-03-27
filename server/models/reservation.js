@@ -21,7 +21,7 @@ const reservationSchema = new Schema({
         type: String,
         required: true,
     },
-    services: {
+    services: [{
         type: {
             type: String,
             required: true,
@@ -33,7 +33,7 @@ const reservationSchema = new Schema({
             type: Number,
             required: true,
         },
-    },
+    }],
     specialRequests: {
         type: String,
     },
