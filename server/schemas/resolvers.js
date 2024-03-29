@@ -18,9 +18,9 @@ const resolvers = {
     reservation: async (parent, { reservationId }) => {
       return Reservation.findById(reservationId);
     },
-    // schedule: async () => {
-    //   return Schedule.find().populate("Days");
-    // },
+    schedule: async () => {
+      return Schedule.find().populate("Days");
+    },
   },
 
   Mutation: {
@@ -82,10 +82,10 @@ const resolvers = {
         });
       return reservation;
     },
-    // addYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
-    //   const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
-    //   return schedule;
-    // },
+    addYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
+      const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
+      return schedule;
+    },
 
   },
 };
