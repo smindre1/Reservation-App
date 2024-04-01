@@ -40,7 +40,7 @@ const typeDefs = `
         user: User
     }
 
-    type Schedule {
+    type Calendar {
         year: Int!
         January: [Days]!
         February: [Days]!
@@ -58,25 +58,49 @@ const typeDefs = `
 
     type Days {
         day: Int!
-        weekday: String!
+        weekday: Int!
         open: Boolean!
+    }
+
+    type Schedule {
+        year: Int!
+        January: [DayPlans]!
+        February: [DayPlans]!
+        March: [DayPlans]!
+        April: [DayPlans]!
+        May: [DayPlans]!
+        June: [DayPlans]!
+        July: [DayPlans]!
+        August: [DayPlans]!
+        September: [DayPlans]]!
+        October: [DayPlans]!
+        November: [DayPlans]!
+        December: [DayPlans]!
+    }
+
+    type DayPlans {
+        day: Int!
         timeSlots: [timeSlots]!
     }
 
     type timeSlots {
-        time: String!
-        available: Boolean!
-    }
-
-    input timeSlotData {
-        time: String!
+        time: Int!
         available: Boolean!
     }
 
     input DayData {
         day: Int!
-        weekday: String!
+        weekday: Int!
         open: Boolean!
+    }
+
+    input timeSlotData {
+        time: Int!
+        available: Boolean!
+    }
+
+    input DayPlanData {
+        day: Int!
         timeSlots: timeSlotData!
     }
 
@@ -100,6 +124,7 @@ const typeDefs = `
         reservations: [Reservation]
         reservation(reservationId: ID!): Reservation
         schedule: [Schedule]
+        calendar: [Calendar]
     }
 
     type Mutation {
@@ -117,7 +142,9 @@ const typeDefs = `
 
         cancelReservation(reservationId: ID!): Reservation
 
-        addYear(year: Int!, January: [DayData]!, February: [DayData]!, March: [DayData]!, April: [DayData]!, May: [DayData]!, June: [DayData]!, July: [DayData]!, August: [DayData]!, September: [DayData]!, October: [DayData]!, November: [DayData]!, December: [DayData]!): Schedule
+        addCalendarYear(year: Int!, January: [DayData]!, February: [DayData]!, March: [DayData]!, April: [DayData]!, May: [DayData]!, June: [DayData]!, July: [DayData]!, August: [DayData]!, September: [DayData]!, October: [DayData]!, November: [DayData]!, December: [DayData]!): Calendar
+
+        addScheduleYear(year: Int!, January: [DayPlanData]!, February: [DayPlanData]!, March: [DayPlanData]!, April: [DayPlanData]!, May: [DayPlanData]!, June: [DayPlanData]!, July: [DayPlanData]!, August: [DayPlanData]!, September: [DayPlanData]!, October: [DayPlanData]!, November: [DayPlanData]!, December: [DayPlanData]!): Schedule
 
 
     }

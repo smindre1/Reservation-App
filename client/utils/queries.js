@@ -69,118 +69,162 @@ export const GET_RESERVATION = gql`
   }
 `;
 
-// export const GET_SCHEDULE = gql`
-//   query schedule {
-//     schedule {
-//       year
-//       January {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       February {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       March {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       April {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       May {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       June {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       July {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       August {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       September {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       October {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       November {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//       December {
-//         day
-//         weekday
-//         open
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//     }
-//   }
-// `;
+export const GET_CALENDAR = gql`
+  query calendar {
+    schedule {
+      year
+      January {
+        day
+        weekday
+        open
+      }
+      February {
+        day
+        weekday
+        open
+      }
+      March {
+        day
+        weekday
+        open
+      }
+      April {
+        day
+        weekday
+        open
+      }
+      May {
+        day
+        weekday
+        open
+      }
+      June {
+        day
+        weekday
+        open
+      }
+      July {
+        day
+        weekday
+        open
+      }
+      August {
+        day
+        weekday
+        open
+      }
+      September {
+        day
+        weekday
+        open
+      }
+      October {
+        day
+        weekday
+        open
+      }
+      November {
+        day
+        weekday
+        open
+      }
+      December {
+        day
+        weekday
+        open
+      }
+    }
+  }
+`;
+
+export const GET_SCHEDULE = gql`
+  query schedule {
+    schedule {
+      year
+      January {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      February {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      March {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      April {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      May {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      June {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      July {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      August {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      September {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      October {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      November {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+      December {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+    }
+  }
+`;

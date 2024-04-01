@@ -66,7 +66,7 @@ const buildSchedule = async () => {
 //Process exit code 1 means failure, 0 means success
 db.once('open', async () => {
   try {
-    Schedule.find().populate("Days") ? console.log('The Schedule has already been seeded') : await buildSchedule();
+    Schedule.find() ? console.log('The Schedule has already been seeded') : await buildSchedule();
 
   } catch (err) {
     console.error(err);

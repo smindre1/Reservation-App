@@ -19,7 +19,10 @@ const resolvers = {
       return Reservation.findById(reservationId);
     },
     schedule: async () => {
-      return Schedule.find().populate("Days");
+      return Schedule.find();
+    },
+    calendar: async () => {
+      return Schedule.find();
     },
   },
 
@@ -82,11 +85,14 @@ const resolvers = {
         });
       return reservation;
     },
-    addYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
+    addCalendarYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
       const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
       return schedule;
     },
-
+    addScheduleYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
+      const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
+      return schedule;
+    },
   },
 };
 

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const scheduleeSchema = new Schema({
+const scheduleSchema = new Schema({
     year: {
         type: Number,
         required: true,
@@ -10,17 +10,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -34,17 +26,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -58,17 +42,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -82,17 +58,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -106,17 +74,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -130,17 +90,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -154,17 +106,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -178,17 +122,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -202,17 +138,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -226,17 +154,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -250,17 +170,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -274,17 +186,9 @@ const scheduleeSchema = new Schema({
             type: Number,
             required: true,
         },
-        weekday: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
         timeSlots: [{
             time: {
-                type: String,
+                type: Number,
                 required: true,
             },
             available: {
@@ -295,6 +199,6 @@ const scheduleeSchema = new Schema({
     }],
 });
 
-const Schedule = model('Schedule', scheduleeSchema);
+const Schedule = model('Schedule', scheduleSchema);
 
 module.exports = Schedule;
