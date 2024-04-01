@@ -28,6 +28,12 @@ https://www.apollographql.com/tutorials/lift-off-part4/02-what-is-a-mutation
 
 ### Models:
 
+- Calendar:
+Weekday: This is a key that holds a number from 0 to 6, representing Sunday to Saturday.
+```
+weekdayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+````
+
 - Schedule:
 
 TimeSlots: Timeslots is an array of objects, each object containing 2 key value pairs which are 'time' and 'available'. The 'available' simply denotes if a specific time is available for booking/reserving, using a boolean value. The 'time' holds a number ranging from 0 to 93, representing each 15 minute interval in a 24 hour day. The following is a key for what each number used for 'time' represents:
