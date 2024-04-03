@@ -137,94 +137,33 @@ export const GET_CALENDAR = gql`
   }
 `;
 
+// export const GET_SCHEDULE = gql`
+//   query schedule($year: Int!, $month: String!, $day: Int!) {
+//     schedule(year: $year, month: $month, day: $day) {
+//       data
+//     }
+//   }
+// `;
+
 export const GET_SCHEDULE = gql`
-  query schedule {
-    schedule {
-      year
-      January {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      February {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      March {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      April {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      May {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      June {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      July {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      August {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      September {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      October {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      November {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
-      December {
-        day
-        timeSlots {
-          time
-          available
-        }
-      }
+  query schedule($year: Int!, $month: String!, $day: Int!) {
+    schedule(year: $year, month: $month, day: $day) {
+      time
+      available
     }
   }
 `;
+
+// export const GET_SCHEDULE = gql`
+//   query schedule($year: Int!, $month: String!, $day: Int!) {
+//     schedule(year: $year) {
+//       [month](day: $day) {
+//         day
+//         timeSlots {
+//           time
+//           available
+//         }
+//       }
+//     }
+//   }
+// `;

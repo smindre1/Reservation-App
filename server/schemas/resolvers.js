@@ -1,5 +1,23 @@
 const { User, Reservation, Calendar, Schedule } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
+// const { GraphQLScalarType } = require('graphql');
+
+// const JSONScalar = new GraphQLScalarType({
+//   name: 'JSON',
+//   description: 'The `JSON` scalar type represents JSON objects as a string.',
+//   serialize(value) {
+//     return JSON.stringify(value);
+//   },
+//   parseValue(value) {
+//     return JSON.parse(value);
+//   },
+//   parseLiteral(ast) {
+//     if (ast.kind === Kind.STRING) {
+//       return JSON.parse(ast.value);
+//     }
+//     return null;
+//   },
+// });
 
 const resolvers = {
   Query: {
@@ -18,11 +36,31 @@ const resolvers = {
     reservation: async (parent, { reservationId }) => {
       return Reservation.findById(reservationId);
     },
-    schedule: async () => {
-      return Schedule.find();
+    schedule: async (parent, { year, month, day }) => {
+      const schedule = await Schedule.findOne({year});
+
+      if(!schedule) {
+        throw new Error('Schedule Not Found!');
+      }
+
+      const monthData = schedule[month];
+
+      if(!monthData) {
+        throw new Error('Month Not Found!');
+      }
+
+      const dayPlans = monthData.find((dayPlan) => dayPlan.day == day);
+      if(!dayPlans) {
+        throw new Error('Day Not Found!');
+      }
+
+      const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.available == true);
+
+
+      return availableTimeSlots;
     },
     calendar: async () => {
-      return Calendar.find();
+      return await Calendar.find();
     },
   },
 
@@ -72,7 +110,7 @@ const resolvers = {
     },
     updateReservation: async (parent, context) => {
       if (context.reservation) {
-        const reservation = Reservation.findOneAndUpdate(
+        const reservation = await Reservation.findOneAndUpdate(
           { _id: context.reservation.reservationId },
           context.reservation );
 
@@ -96,4 +134,7 @@ const resolvers = {
   },
 };
 
+// module.exports = {
+//   JSON: JSONScalar, resolvers: resolvers
+// };
 module.exports = resolvers;

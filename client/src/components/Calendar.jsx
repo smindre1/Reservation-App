@@ -2,6 +2,7 @@ import {useQuery} from '@apollo/client'
 import { GET_CALENDAR } from '../../utils/queries';
 import { useState, useEffect } from 'react';
 import "../../src/index.css";
+import Schedule from './Schedule';
 
 const Calendar = () => {
 
@@ -51,6 +52,7 @@ const Calendar = () => {
                     return <a className={ days.day == loadDay ? 'selectedDay calendarDay' : 'calendarDay'} value={days.day} onClick={(e) => {setDay(e.target.getAttribute("value"))}}>{days.day}</a>
                 }) : null}
             </div>
+            <Schedule year={loadYear} month={loadMonth} day={loadDay}/>
         </div>
     );
 };

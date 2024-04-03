@@ -1,4 +1,7 @@
 const typeDefs = `
+
+    scalar JSON
+
     type User {
         _id: ID!
         fullName: String!
@@ -123,7 +126,7 @@ const typeDefs = `
         me: User
         reservations: [Reservation]
         reservation(reservationId: ID!): Reservation
-        schedule: [Schedule]
+        schedule(year: Int!, month: String!, day: Int!): [timeSlots]
         calendar: [Calendar]
     }
 
