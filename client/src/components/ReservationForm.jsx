@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_RESERVATION } from "../../utils/mutations";
-import Schedule from "./Schedule";
+import Calendar from "./Calendar";
 // import Popup from '../components/Popup';
 
 const ReservationForm = () => {
@@ -138,7 +138,7 @@ const ReservationForm = () => {
           <p className="errorTxt hide">Please choose an available Day</p>
         </div>
         <div ref={appointmentTimeId} className="flexColumn">
-          <Schedule />
+          <Calendar />
           <input className="formFields" type="text" placeholder="Appointment Time" autoComplete="off" value={appointmentTime} onChange={(e) => {setAppointmentTime(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div>

@@ -69,3 +69,26 @@ body {
 .serviceItemCard {
     border-top: dotted black 2px;
 }
+
+.calendar {
+    background-color: #f3f3f3;
+    border: solid 2px #dfdfdf;
+    padding: 10px;
+    width: fit-content;
+}
+
+.calendarDays {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 200px;
+}
+
+.calendarDay {
+    width: 20px;
+    margin: 4px;
+}
+
+.selectedDay {
+    background-color: #28e6dd;
+}

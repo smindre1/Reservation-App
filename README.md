@@ -16,6 +16,8 @@ Created By Shane Mindreau.
 
 -Add services and payment(default) to ReservationForm.jsx.
 
+-Add validators to the models/seed.js file to check if pre-existing data is present before seeding.
+
 To Learn More About GraphQL:
 https://www.apollographql.com/tutorials/lift-off-part4/02-what-is-a-mutation
 

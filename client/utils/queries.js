@@ -71,7 +71,7 @@ export const GET_RESERVATION = gql`
 
 export const GET_CALENDAR = gql`
   query calendar {
-    schedule {
+    calendar {
       year
       January {
         day

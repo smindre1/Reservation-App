@@ -72,7 +72,7 @@ const typeDefs = `
         June: [DayPlans]!
         July: [DayPlans]!
         August: [DayPlans]!
-        September: [DayPlans]]!
+        September: [DayPlans]!
         October: [DayPlans]!
         November: [DayPlans]!
         December: [DayPlans]!

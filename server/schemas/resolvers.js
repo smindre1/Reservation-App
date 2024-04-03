@@ -1,4 +1,4 @@
-const { User, Reservation, Schedule } = require("../models");
+const { User, Reservation, Calendar, Schedule } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -22,7 +22,7 @@ const resolvers = {
       return Schedule.find();
     },
     calendar: async () => {
-      return Schedule.find();
+      return Calendar.find();
     },
   },
 
