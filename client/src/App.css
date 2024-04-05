@@ -75,6 +75,10 @@ body {
     border: solid 2px #dfdfdf;
     padding: 10px;
     width: fit-content;
+    width: -moz-fit-content;
+    height: fit-content;
+    height: -moz-fit-content;
+    margin: 0 40px 0 0;
 }
 
 .calendarDays {
@@ -91,4 +95,42 @@ body {
 
 .selectedDay {
     background-color: #28e6dd;
+}
+
+.schedule {
+    background-color: #f3f3f3;
+    border: solid 2px #dfdfdf;
+    padding: 10px;
+    width: fit-content;
+    width: -moz-fit-content;
+    height: fit-content;
+    height: -moz-fit-content;
+}
+
+.listedTimeSlots {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 330px;
+}
+
+.timeslot {
+    border: solid 2px #dfdfdf;
+    padding: 2px 8px 2px 8px;
+    width: fit-content;
+    width: -moz-fit-content;
+    margin: 0 4px 8px 0;
+}
+
+.timeslot:hover {
+    cursor: pointer;
+}
+
+.selectedTime {
+    background-color: #28e6dd;
+}
+
+.dateTool {
+    display: flex;
+    flex-direction: row;
 }
