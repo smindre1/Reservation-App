@@ -87,6 +87,7 @@ const ReservationForm = () => {
     const intPrice = Number(servicePrice);
     console.log(typeof intPrice, "price Int?");
     setServicePrice(intPrice)
+    //This is the date and time(s) taken from the Calendar/Schedule components
     const year = calendarId.current.getAttribute("year");
     const month = calendarId.current.getAttribute("month");
     const day = calendarId.current.getAttribute("day");

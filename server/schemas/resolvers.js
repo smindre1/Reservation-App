@@ -1,23 +1,5 @@
 const { User, Reservation, Calendar, Schedule } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
-// const { GraphQLScalarType } = require('graphql');
-
-// const JSONScalar = new GraphQLScalarType({
-//   name: 'JSON',
-//   description: 'The `JSON` scalar type represents JSON objects as a string.',
-//   serialize(value) {
-//     return JSON.stringify(value);
-//   },
-//   parseValue(value) {
-//     return JSON.parse(value);
-//   },
-//   parseLiteral(ast) {
-//     if (ast.kind === Kind.STRING) {
-//       return JSON.parse(ast.value);
-//     }
-//     return null;
-//   },
-// });
 
 const resolvers = {
   Query: {

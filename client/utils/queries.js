@@ -27,6 +27,7 @@ export const GET_ME = gql`
 export const GET_RESERVATIONS = gql`
 query getReservations {
   reservations {
+    _id
     day
     appointmentTime
     email
@@ -57,14 +58,6 @@ export const GET_RESERVATION = gql`
           price
         }
         specialRequests
-        payment {
-            _id
-            cardOwner
-            cardNumber
-            cardExpiration
-            securityCode
-            billingAddress
-        }
     }
   }
 `;

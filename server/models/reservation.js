@@ -17,10 +17,10 @@ const reservationSchema = new Schema({
         type: String,
         required: true,
     },
-    appointmentTime: {
-        type: String,
+    appointmentTime: [{
+        type: Number,
         required: true,
-    },
+    }],
     services: [{
         type: {
             type: String,
