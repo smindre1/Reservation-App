@@ -146,10 +146,6 @@ const ReservationForm = () => {
         </div>
       </div>
       <div className="flexColumn">
-        <div ref={appointmentTimeId} className="flexColumn">
-          <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="true"/>
-          <p className="errorTxt hide">Please choose an available appointment time</p>
-        </div>
 
         {/* Services */}
         <div className="flexColumn">
@@ -163,6 +159,12 @@ const ReservationForm = () => {
         <div ref={specialRequestsId} className="flexColumn">
           <input className="formFields" type="text" placeholder="Special Requests" autoComplete="off" value={specialRequests} onChange={(e) => {setSpecialRequests(e.target.value)}} />
         </div>
+
+        <div ref={appointmentTimeId} className="flexColumn">
+          <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="true"/>
+          <p className="errorTxt hide">Please choose an available appointment time</p>
+        </div>
+
         <button className="formBtn" type="submit">Submit</button>
       </div>
 

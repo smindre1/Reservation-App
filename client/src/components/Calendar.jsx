@@ -9,7 +9,8 @@ const Calendar = forwardRef((props, calendarId) => {
     const [loadYear, setYear] = useState();
     const [loadMonth, setMonth] = useState();
     const [loadDays, setDays] = useState();
-    const [loadDay, setDay] = useState(1);
+    const [loadDay, setDay] = useState();
+    const [loadOpenStatus, setOpenStatus] = useState();
     const [updated, setUpdated] = useState(false);
     const [loadTimeSlots, setTimeSlots] = useState();
     const { loading: wait, error, data: calendar} = useQuery(GET_CALENDAR);
@@ -41,6 +42,12 @@ const Calendar = forwardRef((props, calendarId) => {
         setDays(specificYear[month]);
     };
 
+    const checkIfClosed = (days) => {
+        if(days.day == loadDay) { return 'selectedDay calendarDay'} 
+        else if (days.open == false) { return 'closedCalendarDay calendarDay'}
+        else { return 'calendarDay'}
+    }
+
     return(
         <div ref={calendarId} year={loadYear} month={loadMonth} day={loadDay} timeslots={loadTimeSlots} className="dateTool">
             <div className='calendar'>
@@ -60,11 +67,11 @@ const Calendar = forwardRef((props, calendarId) => {
                 <div className='calendarDays'>
                     {loadDays ?
                         loadDays.map((days) => {
-                        return <a className={ days.day == loadDay ? 'selectedDay calendarDay' : 'calendarDay'} value={days.day} key={days.day} onClick={(e) => {setDay(e.target.getAttribute("value"))}}>{days.day}</a>
+                        return <a className={checkIfClosed(days)} value={days.day} key={days.day} onClick={(e) => {setDay(e.target.getAttribute("value")); setOpenStatus(days.open)}}>{days.day}</a>
                     }) : null}
                 </div>
             </div>
-            { props.schedule === "true" ? <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/> : null}
+            { props.schedule === "true" && loadOpenStatus === true ? <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/> : <p className='schedule'>No available timeslots for this date.<br></br>(Please select another day)</p>}
         </div>
     );
 });
