@@ -1,6 +1,7 @@
 import {useQuery} from '@apollo/client'
 import { GET_RESERVATIONS } from '../../utils/queries';
 import { useState, useEffect } from 'react';
+import TimeSlotIndex from "../assets/TimeSlotIndex";
 import "../../src/index.css";
 
 const Reservations = () => {
@@ -20,17 +21,15 @@ const Reservations = () => {
 
     const reservationSchedule = () => {   
         const reservations = reservationRoster?.reservations || [];
-        console.log(reservationRoster?.reservations, "roster");
         var sortedList;
         if(reservationRoster?.reservations) {
             sortedList = [...reservations];
             sortedList = sortedList.sort((a, b) => {
                 return (Number(a.day) - Number(b.day));
             });
-            console.log(sortedList, "Sorted List");
+            // console.log(sortedList, "Sorted List");
             
             setRoster(sortedList);
-            console.log(reservations, "ummm");
         } else {
         setRoster(reservations);}
     };
@@ -49,7 +48,7 @@ const Reservations = () => {
             {loadRoster.map((reservation) => {
                 return (
                 <div className='clientReservationCard' key={reservation._id} reservationid={reservation._id} onClick={recordId}>
-                    <p className='cardText'>{reservation?.appointmentTime || "none"} (Appointment Time)</p>
+                    <p className='cardText'>{TimeSlotIndex[reservation?.appointmentTime] || "none"} (Appointment Time)</p>
                     <p className='cardText bold'>Client's Name: {reservation?.name || "No name"}</p>
                     <p className='cardText bold'>Email: {reservation?.email || "none"}</p>
                     <p className='cardText'>Phone Number: {reservation?.phone || "none"}</p>

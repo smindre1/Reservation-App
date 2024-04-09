@@ -10,14 +10,21 @@ body {
 }
 
 .highlight {
-    background-color: black;
+    background-color: #28e6dd;
     color: white;
+    height: fit-content;
+    height: -moz-fit-content;
 }
 
 .menuBarText {
     padding: 8px;
     margin: 0 8px;
     font-size: 18px;
+}
+
+.settingsIcon {
+    width: 30px;
+
 }
 
 .bold {

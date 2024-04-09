@@ -149,7 +149,7 @@ const typeDefs = `
 
         addScheduleYear(year: Int!, January: [DayPlanData]!, February: [DayPlanData]!, March: [DayPlanData]!, April: [DayPlanData]!, May: [DayPlanData]!, June: [DayPlanData]!, July: [DayPlanData]!, August: [DayPlanData]!, September: [DayPlanData]!, October: [DayPlanData]!, November: [DayPlanData]!, December: [DayPlanData]!): Schedule
 
-
+        calendarDayOpenStatus(year: Int!, month: String!, day: Int!, open: Boolean!): Calendar
     }
 `;
 

@@ -147,7 +147,7 @@ const ReservationForm = () => {
       </div>
       <div className="flexColumn">
         <div ref={appointmentTimeId} className="flexColumn">
-          <Calendar ref={calendarId} year="" month="" day="" timeslots=""/>
+          <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="true"/>
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div>
 

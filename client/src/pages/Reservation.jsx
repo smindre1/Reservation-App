@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import {useQuery} from '@apollo/client'
 import { GET_RESERVATION } from '../../utils/queries';
 import { useState, useEffect } from 'react';
+import TimeSlotIndex from "../assets/TimeSlotIndex";
 import "../../src/index.css";
 
 const Reservation = () => {
@@ -15,7 +16,7 @@ const Reservation = () => {
       <div className='center'>
             {wait ? <h2>Loading...</h2> : 
                 <div className='clientReservationCard' reservationid={reservation.reservation?._id}>
-                    <p className='cardText'>{reservation.reservation?.appointmentTime || "none"} (Appointment Time)</p>
+                    <p className='cardText'>{TimeSlotIndex[reservation.reservation?.appointmentTime] || "none"} (Appointment Time)</p>
                     <p className='cardText bold'>Client's Name: {reservation.reservation?.name || "No name"}</p>
                     <p className='cardText bold'>Email: {reservation.reservation?.email || "none"}</p>
                     <p className='cardText'>Phone Number: {reservation.reservation?.phone || "none"}</p>

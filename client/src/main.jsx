@@ -10,6 +10,7 @@ import Employees from './pages/Employees.jsx';
 import Profile from './pages/Profile.jsx';
 import Reservation from './pages/Reservation.jsx';
 import Reservations from './pages/Reservations.jsx';
+import Settings from './pages/Settings.jsx';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,9 @@ const router = createBrowserRouter([
       }, {
         path: '/reservations/:reservationId',
         element: <Reservation />
+      }, {
+        path: '/settings',
+        element: <Settings />
       }
     ]
   },

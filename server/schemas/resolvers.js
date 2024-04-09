@@ -106,12 +106,23 @@ const resolvers = {
       return reservation;
     },
     addCalendarYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
-      const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
+      const schedule = await Calendar.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
       return schedule;
     },
     addScheduleYear: async (parent, { year, January, February, March, April, May, June, July, August, September, October, November, December }) => {
       const schedule = await Schedule.create({ year, January, February, March, April, May, June, July, August, September, October, November, December });
       return schedule;
+    },
+    calendarDayOpenStatus: async (parent, { year, month, day, open }) => {
+      //Finds the calendar year
+      let calendar = await Calendar.find({year});
+      //Creates an array with the specific day of the month targeted to have it's open status changed (to either true or false)
+      let updatedMonth = calendar[0][month].map((days) => {
+        days.day == day ? days.open = open : days;
+        return days;
+      });
+      const updatedCalendar = await Calendar.findOneAndUpdate({ year }, {[month]: updatedMonth});
+      return updatedCalendar;
     },
   },
 };

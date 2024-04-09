@@ -26,7 +26,7 @@ const Calendar = forwardRef((props, calendarId) => {
     useEffect(() => {
         if(calendar) {
             displayDays(loadYear, loadMonth);
-        }    
+        }
     }, [wait, loadYear, loadMonth])
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const Calendar = forwardRef((props, calendarId) => {
                     }) : null}
                 </div>
             </div>
-            <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/>
+            { props.schedule === "true" ? <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/> : null}
         </div>
     );
 });

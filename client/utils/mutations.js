@@ -116,6 +116,20 @@ export const DEL_RESERVATION = gql`
   }
 `;
 
+export const UPDATE_DAY_STATUS = gql`
+  mutation calendarDayOpenStatus($year: Int!, $month: String!, $day: Int!, $open: Boolean!) {
+    calendarDayOpenStatus(year: $year,  month: $month, day: $day, open: $open) {
+      year
+      January {
+        day
+        open
+      }
+    }
+  }
+`;
+
+
+
 // export const ADD_YEAR = gql`
 //   mutation addYear($year: Int!, $January: [Days]!, $February: [Days]!, $March: [Days]!, $April: [Days]!, $May: [Days]!, $June: [Days]!, $July: [Days]!, $August: [Days]!, $September: [Days]!, $October: [Days]!, $November: [Days]!, $December: [Days]!) {
 //     addReservation(year: $year, January: $January, February: $February, March: $March, April: $April, May: $May, June: $June, July: $July, August: $August, September: $September, October: $October, November: $November, December: $December) {
