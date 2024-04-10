@@ -4,25 +4,22 @@ import { useState, useEffect, useRef, forwardRef } from 'react';
 import "../../src/index.css";
 import Schedule from './Schedule';
 
-const Calendar = forwardRef((props, calendarId) => {
+const Calendar = forwardRef((props, ref) => {
+    const calendarId = ref;
+    const today = new Date();
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    const [loadYear, setYear] = useState();
-    const [loadMonth, setMonth] = useState();
+    const [loadYear, setYear] = useState(today.getFullYear());
+    const [loadMonth, setMonth] = useState(months[today.getMonth()]);
     const [loadDays, setDays] = useState();
     const [loadDay, setDay] = useState();
     const [loadOpenStatus, setOpenStatus] = useState();
     const [updated, setUpdated] = useState(false);
     const [loadTimeSlots, setTimeSlots] = useState();
+
     const { loading: wait, error, data: calendar} = useQuery(GET_CALENDAR);
 
     const scheduleId = useRef(null);
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    
-    useEffect(() => {
-        const today = new Date();
-        setYear(today.getFullYear());
-        setMonth(months[today.getMonth()]);
-    }, [])
 
     useEffect(() => {
         if(calendar) {
@@ -37,6 +34,9 @@ const Calendar = forwardRef((props, calendarId) => {
         }
     }, [updated])
 
+    useEffect(() => {
+    }, [loadYear])
+
     const displayDays = (year, month) => {
         const specificYear = calendar.calendar.find((calYears) => calYears.year == year);
         setDays(specificYear[month]);
@@ -48,6 +48,18 @@ const Calendar = forwardRef((props, calendarId) => {
         else { return 'calendarDay'}
     }
 
+    const loadSchedule = () => {
+        if(props.schedule === "true") {
+            if(loadOpenStatus === true) {
+                return(<Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/>)
+            } else {
+                return(<p className='schedule'>No available timeslots for this date.<br></br>(Please select another day)</p>)
+            }
+        } else {
+            return null;
+        }
+    }
+
     return(
         <div ref={calendarId} year={loadYear} month={loadMonth} day={loadDay} timeslots={loadTimeSlots} className="dateTool">
             <div className='calendar'>
@@ -55,7 +67,8 @@ const Calendar = forwardRef((props, calendarId) => {
                 <select title="year" name="type" value={loadYear} onChange={(e) => {setYear(e.target.value)}}>
                     <option value="" disabled>-Select-</option>
                     {calendar?.calendar ? calendar.calendar.map((year) => {
-                        return <option value={year.year} key={year.year}>{year.year}</option>
+                        //This is to exclude any Test Calendar Years (The Test Calendar Year is used in the Settings page)
+                        return 1999 < year.year && year.year < 3000 ? <option value={year.year} key={year.year}>{year.year}</option> : null;
                     }) : null}
                 </select>
                 <select title="month" name="type" value={loadMonth} onChange={(e) => {setMonth(e.target.value)}}>
@@ -71,7 +84,8 @@ const Calendar = forwardRef((props, calendarId) => {
                     }) : null}
                 </div>
             </div>
-            { props.schedule === "true" && loadOpenStatus === true ? <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/> : <p className='schedule'>No available timeslots for this date.<br></br>(Please select another day)</p>}
+            {/* { props.schedule === "true" && loadOpenStatus === true ? <Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} setTrigger={setUpdated}/> : <p className='schedule'>No available timeslots for this date.<br></br>(Please select another day)</p>} */}
+            {loadSchedule()}
         </div>
     );
 });

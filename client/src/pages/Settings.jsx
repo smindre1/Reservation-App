@@ -12,11 +12,12 @@ const Settings = () => {
   const [OperationChange, setOperationChange] = useState("");
   const [listOfDays, setListOfDays] = useState([]);
 
-  const calendarId = useRef(null);
+  const calendarOneId = useRef(null);
+  const calendarTwoId = useRef(null);
   const [updateDay, { error, data }] = useMutation(UPDATE_DAY_STATUS);
 
   // useEffect(() => {
-  //   console.log(listOfDays, "list");
+  //   UpdatingCalendar == false ? setUpdatingHours(true) : null;
   // }, [listOfDays])
 
   const updateSpecificDays = async () => {
@@ -27,22 +28,6 @@ const Settings = () => {
         try {
           if(OperationChange == "Open" || OperationChange == "Closed") {
             let openStatus = OperationChange == "Open" ? true : false;
-            // let promises = [];
-            // listOfDays.map((date) => {
-            //   const promise = new Promise((resolve, reject) => {
-            //     setTimeout(async () => {
-            //       resolve(await updateDay({
-            //   variables: { year: Number(date.year) , month: date.month, day: Number(date.day), open: openStatus}
-            //   }));
-            //     }, 500);
-            //   });
-            //   promises.push(promise);
-            // });
-            // console.log(promises);
-            // if (promises != []) {
-            // const results = await Promise.allSettled(promises)}
-        
-
             for(let i=0; i < listOfDays.length; i++) {
               await updateDay({
                   variables: { year: Number(listOfDays[i].year) , month: listOfDays[i].month, day: Number(listOfDays[i].day), open: openStatus}
@@ -55,18 +40,18 @@ const Settings = () => {
   }}
 
   const addDayToList = () => {
-    if(calendarId.current.getAttribute("year") == null || calendarId.current.getAttribute("month") == null || calendarId.current.getAttribute("day") == null) {
+    if(calendarOneId.current.getAttribute("year") == null || calendarOneId.current.getAttribute("month") == null || calendarOneId.current.getAttribute("day") == null) {
       return;
     } else {
-      let year = calendarId.current.getAttribute("year");
-      let month = calendarId.current.getAttribute("month");
-      let day = calendarId.current.getAttribute("day");
+      let year = calendarOneId.current.getAttribute("year");
+      let month = calendarOneId.current.getAttribute("month");
+      let day = calendarOneId.current.getAttribute("day");
       let list = [...listOfDays];
       list.push({year, month, day})
       setListOfDays(list);
     }
   }
-              // 
+
   return (
     <section>
         <h1>Settings:</h1>
@@ -75,6 +60,7 @@ const Settings = () => {
         </div>
         <div>
           <h2>Adjust Days Of the Week:</h2>
+
         </div>
         <div>
           <h2>Open/Close For Specific Days of the Year (Holidays, Birthdays, etc...):</h2>
@@ -82,7 +68,7 @@ const Settings = () => {
           {UpdatingCalendar ? 
           <div>
             <p>Explore the Calendar and click the select button to add a date to the list:</p>
-            <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="false"/>
+            <Calendar ref={calendarOneId} year="" month="" day="" timeslots="" schedule="false"/>
             
             <button onClick={addDayToList}>Select</button>
             <p>Selected Dates:</p>
@@ -108,7 +94,7 @@ const Settings = () => {
           <button onClick={() => {setUpdatingCalendar(false); setUpdatingHours(true)}}>Update Specific Operating Days</button>
           {UpdatingHours ? 
           <div>
-            <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="false"/>
+            <Calendar ref={calendarTwoId} year="" month="" day="" timeslots="" schedule="false"/>
           </div>
              : null}
         </div>

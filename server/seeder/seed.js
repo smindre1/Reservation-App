@@ -7,6 +7,19 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 
+//This function builds the test calendar year 1000 which will be used as a control variable to check and record user adjustments to the overall calendar, like which weekdays to be open for and general opening hours for a business day.
+const buildTestCalendarYear = (year) => {
+  let builtYear = {year};
+  months.forEach((month) => {
+    //Each test month will be 7 days long and each start on Sunday
+    let numOfDays = 7;
+    const weekdayIndex = 0;
+    const finishedMonth = buildCalendarMonth(numOfDays, weekdayIndex);
+    builtYear[month] = finishedMonth;
+  });
+  return builtYear;
+}
+
 //This function builds the data object for a specific year to be used for the Calendar model
 const buildCalendarYear = (year) => {
   let builtYear = {year};
@@ -107,7 +120,7 @@ const buildSchedule = async () => {
 //Process exit code 1 means failure, 0 means success
 db.once('open', async () => {
   try {
-    // Calendar.find() ? console.log('The Calendar has already been seeded') : await buildCalendar();
+    // await Calendar.find() ? console.log('The Calendar has already been seeded') : await buildCalendar();
     // Schedule.find() ? console.log('The Schedule has already been seeded') : await buildSchedule();
 
     // const testing = Schedule.find();
@@ -115,6 +128,9 @@ db.once('open', async () => {
     // testing[0] ? console.log("Stuff") : console.log("nothing");
     await buildCalendar();
     await buildSchedule();
+    let testYear = buildTestCalendarYear(1000);
+    await Calendar.create(testYear);
+
 
   } catch (err) {
     console.error(err);
