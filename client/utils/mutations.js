@@ -128,7 +128,19 @@ export const UPDATE_DAY_STATUS = gql`
   }
 `;
 
+export const UPDATE_SCHEDULE_DAY = gql`
+  mutation updateScheduleDay($year: Int!, $month: String!, $day: Int!, $openingTime: Int!, $closingTime: Int!) {
+    updateScheduleDay(year: $year,  month: $month, day: $day, openingTime: $openingTime, closingTime: $closingTime) {
+      day
+      timeSlots {
+        time
+        available
+      }
+    }
+  }
+`;
 
+// updateScheduleDay(year: Int!, month: String!, day: Int!, openingTime: Int!, closingTime: Int!): DayPlans
 
 // export const ADD_YEAR = gql`
 //   mutation addYear($year: Int!, $January: [Days]!, $February: [Days]!, $March: [Days]!, $April: [Days]!, $May: [Days]!, $June: [Days]!, $July: [Days]!, $August: [Days]!, $September: [Days]!, $October: [Days]!, $November: [Days]!, $December: [Days]!) {

@@ -31,6 +31,11 @@ body {
     font-weight: 900;
 }
 
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
 /* ----------------------- Portal ------------------------------ */
 .portal {
     display: flex;
@@ -164,4 +169,15 @@ body {
     display: flex;
     flex-direction: row;
     margin: 4px 0 4px 0;
+}
+
+/* ----------------------- Settings Page ------------------------------ */
+
+.timeInput {
+    height: fit-content;
+    height: -moz-fit-content;
+}
+
+.text {
+    margin: 0 5px;
 }

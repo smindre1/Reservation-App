@@ -38,11 +38,23 @@ const resolvers = {
 
       const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.available == true);
 
-
       return availableTimeSlots;
     },
     calendar: async () => {
       return await Calendar.find();
+    },
+    getCalendarMonth: async (parent, { year, month }) => {
+      const calendar = await Calendar.findOne({year});
+      if(!calendar) {
+        throw new Error('Calendar Not Found!');
+      }
+
+      const monthData = calendar[month];
+      if(!monthData) {
+        throw new Error('Month Not Found!');
+      }
+
+      return monthData;
     },
   },
 
@@ -123,6 +135,57 @@ const resolvers = {
       });
       const updatedCalendar = await Calendar.findOneAndUpdate({ year }, {[month]: updatedMonth});
       return updatedCalendar;
+    },
+    updateScheduleDay: async (parent, { year, month, day, openingTime, closingTime }) => {
+      const schedule = await Schedule.findOne({year});
+
+      if(!schedule) {
+        throw new Error('Schedule Not Found!');
+      }
+
+      let monthData = schedule[month];
+
+      if(!monthData) {
+        throw new Error('Month Not Found!');
+      }
+
+      let dayPlans = monthData.find((dayPlan) => dayPlan.day == day);
+      if(!dayPlans) {
+        throw new Error('Day Not Found!');
+      }
+
+      dayPlans.timeSlots.map((timeSlot) => {
+        if(timeSlot.time < openingTime || timeSlot.time > closingTime) {
+          timeSlot.available = false;
+        } else {
+          timeSlot.available = true;
+        }
+      });
+
+      monthData[day-1].timeSlots = dayPlans.timeSlots;
+
+      // dayPlans.timeSlots = updatedTimeSlots;
+      // const myPromise = new Promise((resolve, reject) => { 
+      //     resolve(dayPlans.timeSlots.map((timeSlot) => {
+      //       if(timeSlot.time < openingTime || timeSlot.time > closingTime) {
+      //         timeSlot.available = false;
+      //       } else {
+      //         timeSlot.available = true;
+
+      //       }
+      //     }));
+      // });
+
+      // myPromise.then(
+      //   () => {
+      //     // console.log(dayPlans, "q");
+      //     monthData[day-1].timeSlots = dayPlans.timeSlots;
+      //   }
+      // )
+
+      // monthData[day-1].timeSlots = dayPlans;
+      const updatedSchedule = await Schedule.findOneAndUpdate({ year }, {[month]: monthData});
+      return updatedSchedule;
     },
   },
 };

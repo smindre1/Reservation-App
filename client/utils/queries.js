@@ -130,13 +130,15 @@ export const GET_CALENDAR = gql`
   }
 `;
 
-// export const GET_SCHEDULE = gql`
-//   query schedule($year: Int!, $month: String!, $day: Int!) {
-//     schedule(year: $year, month: $month, day: $day) {
-//       data
-//     }
-//   }
-// `;
+export const GET_CALENDAR_MONTH = gql`
+  query getCalendarMonth($year: Int!, $month: String!) {
+    getCalendarMonth(year: $year, month: $month) { 
+      day
+      weekday
+      open
+    }
+  }
+`;
 
 export const GET_SCHEDULE = gql`
   query schedule($year: Int!, $month: String!, $day: Int!) {

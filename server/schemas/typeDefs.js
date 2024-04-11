@@ -128,6 +128,7 @@ const typeDefs = `
         reservation(reservationId: ID!): Reservation
         schedule(year: Int!, month: String!, day: Int!): [timeSlots]
         calendar: [Calendar]
+        getCalendarMonth(year: Int!, month: String!): [Days]
     }
 
     type Mutation {
@@ -150,6 +151,8 @@ const typeDefs = `
         addScheduleYear(year: Int!, January: [DayPlanData]!, February: [DayPlanData]!, March: [DayPlanData]!, April: [DayPlanData]!, May: [DayPlanData]!, June: [DayPlanData]!, July: [DayPlanData]!, August: [DayPlanData]!, September: [DayPlanData]!, October: [DayPlanData]!, November: [DayPlanData]!, December: [DayPlanData]!): Schedule
 
         calendarDayOpenStatus(year: Int!, month: String!, day: Int!, open: Boolean!): Calendar
+
+        updateScheduleDay(year: Int!, month: String!, day: Int!, openingTime: Int!, closingTime: Int!): DayPlans
     }
 `;
 
