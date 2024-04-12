@@ -7,7 +7,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 
-//This function builds the test calendar year 1000 which will be used as a control variable to check and record user adjustments to the overall calendar, like which weekdays to be open for and general opening hours for a business day.
+//This function builds the test calendar year 1000 which will be used as a control variable to check and record user adjustments to the overall calendar, specifically which weekdays to be open for.
 const buildTestCalendarYear = (year) => {
   let builtYear = {year};
   months.forEach((month) => {
@@ -70,6 +70,17 @@ const buildCalendar = async () => {
   }
 }
 
+//This function builds the test schedule year 1000 which will be used as a control variable to check and record user adjustments to the overall schedule, specifically the general opening hours for a business day.
+const buildTestScheduleYear = (year) => {
+  let builtYear = {year};
+  months.forEach((month) => {
+    let numOfDays = 7;
+    const finishedMonth = buildScheduleMonth(numOfDays);
+    builtYear[month] = finishedMonth;
+  });
+  return builtYear;
+}
+
 //This function builds the data object for a specific year to be used for the Schedule model
 const buildScheduleYear = (year) => {
   let builtYear = {year};
@@ -85,22 +96,19 @@ const buildScheduleYear = (year) => {
     } else {
       numOfDays = 30;
     }
-    const firstDay = new Date(year, months.indexOf(month), 1);
-    const weekdayIndex = firstDay.getDay();
-    const finishedMonth = buildScheduleMonth(numOfDays, weekdayIndex);
+    const finishedMonth = buildScheduleMonth(numOfDays);
     builtYear[month] = finishedMonth;
   });
   return builtYear;
 }
 
-const buildScheduleMonth = (iterations, weekday) => {
+const buildScheduleMonth = (iterations) => {
   const month = [];
   for(let i = 1; i < iterations + 1; i++) {
     const buildDay = {
       day: i,
       timeSlots: defaultTimeSlots
     };
-    weekday == 6 ? weekday = 0 : weekday = weekday + 1;
     month.push(buildDay);
   }
   return month;
@@ -128,9 +136,10 @@ db.once('open', async () => {
     // testing[0] ? console.log("Stuff") : console.log("nothing");
     await buildCalendar();
     await buildSchedule();
-    let testYear = buildTestCalendarYear(1000);
-    await Calendar.create(testYear);
-
+    let testCalendarYear = buildTestCalendarYear(1000);
+    await Calendar.create(testCalendarYear);
+    let testScheduleYear = buildTestScheduleYear(1000);
+    await Schedule.create(testScheduleYear);
 
   } catch (err) {
     console.error(err);

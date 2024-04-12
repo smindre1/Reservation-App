@@ -140,7 +140,18 @@ export const UPDATE_SCHEDULE_DAY = gql`
   }
 `;
 
-// updateScheduleDay(year: Int!, month: String!, day: Int!, openingTime: Int!, closingTime: Int!): DayPlans
+export const UPDATE_CALENDAR_WEEKDAYS = gql`
+  mutation calendarWeekdays($Sun: Boolean!, $Mon: Boolean!, $Tue: Boolean!, $Wed: Boolean!, $Thu: Boolean!, $Fri: Boolean!, $Sat: Boolean!) {
+    calendarWeekdays(Sun: $Sun, Mon: $Mon, Tue: $Tue, Wed: $Wed, Thu: $Thu, Fri: $Fri, Sat: $Sat) {
+      year
+      January {
+        day
+        weekday
+        open
+      }
+    }
+  }
+`;
 
 // export const ADD_YEAR = gql`
 //   mutation addYear($year: Int!, $January: [Days]!, $February: [Days]!, $March: [Days]!, $April: [Days]!, $May: [Days]!, $June: [Days]!, $July: [Days]!, $August: [Days]!, $September: [Days]!, $October: [Days]!, $November: [Days]!, $December: [Days]!) {

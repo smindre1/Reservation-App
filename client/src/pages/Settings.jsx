@@ -2,28 +2,81 @@ import { useState, useEffect, useRef} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Auth from "../../utils/auth";
 import Calendar from "../components/Calendar";
-import { UPDATE_DAY_STATUS, UPDATE_SCHEDULE_DAY } from "../../utils/mutations";
+import { UPDATE_DAY_STATUS, UPDATE_SCHEDULE_DAY, UPDATE_CALENDAR_WEEKDAYS } from "../../utils/mutations";
 import { GET_CALENDAR_MONTH } from '../../utils/queries';
 import TimeSlotIndex from "../assets/TimeSlotIndex.js";
 
+//This settings page conducts four operations for the user to customize there business/reservation schedule.
+//Operation One:
+// Allows the user to adjust which days of the week they are open or closed for (Ex: Sun, Mon, Tue...).
+
+//Operation Two:
+// Allows the user to adjust their average/usual operating business hours.
+
+//Operation Three:
+// Allows the user to adjust specific calendar days to open/closed status.
+
+//Operation Four:
+// Allows the user to adjust specific schedule days to different custom operating hours.
 
 const Settings = () => {
 
+  //Operation One:
+  const [UpdatingWeekdayCalendar, setUpdatingWeekdayCalendar] = useState(false);
+  const [weekdays, setWeekdays] = useState({Sun: "", Mon: "", Tue: "", Wed: "", Thu: "", Fri: "", Sat: ""});
+
+  //Operation Three:
   const [UpdatingCalendar, setUpdatingCalendar] = useState(false);
-  const [UpdatingHours, setUpdatingHours] = useState(false);
   const [OperationChange, setOperationChange] = useState("");
   const [listOfDays, setListOfDays] = useState([]);
+  //Operation Four:
+  const [UpdatingSpecificHours, setUpdatingSpecificHours] = useState(false);
   const [secondListOfDays, setSecondListOfDays] = useState([]);
   const [openingTime, setOpeningTime] = useState();
   const [closingTime, setClosingTime] = useState();
 
+  //Operation Three:
   const calendarOneId = useRef(null);
+  //Operation Four:
   const calendarTwoId = useRef(null);
   const [updateDay, { error, data }] = useMutation(UPDATE_DAY_STATUS);
   const [updateScheduleDay, { error: ScheduleError, data: ScheduleDay }] = useMutation(UPDATE_SCHEDULE_DAY);
   //The variables for the calendar month are for the test year that acts as a control group
   //It's only purpose is to reliably measure overall pattern changes applied to the calendar
+  //Operation One:
   const { loading: wait, calendarError, data: calendarMonth} = useQuery(GET_CALENDAR_MONTH, {variables: {year: 1000, month: "January"}});
+  const [updateCalendarWeekdays, { error: CalendarWeekError, data: CalendarWeek }] = useMutation(UPDATE_CALENDAR_WEEKDAYS);
+
+  
+  useEffect(() => {
+    let weekdayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    if (!wait) {
+      let data = calendarMonth.getCalendarMonth;
+      for(let i=0; i < 7; i++) {
+        let updatedWeek = Object.assign(weekdays, {[weekdayIndex[i]]: `${data[i].open}`})
+        setWeekdays(updatedWeek);
+      }
+    }
+}, [wait])
+
+  //Operation One:
+  const updateWeekdays = async () => {
+    await updateCalendarWeekdays({
+      variables: { Sun: JSON.parse(weekdays.Sun), Mon: JSON.parse(weekdays.Mon), Tue: JSON.parse(weekdays.Tue), Wed: JSON.parse(weekdays.Wed), Thu: JSON.parse(weekdays.Thu), Fri: JSON.parse(weekdays.Fri), Sat: JSON.parse(weekdays.Sat) }
+    });
+  }
+
+  const userChangingWeekday = (num, value) => {
+    let weekdayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    console.log(value, "value");
+    // let updatedWeek = Object.assign(weekdays, {[weekdayIndex[num]]: value})
+    // setWeekdays(updatedWeek);
+
+    setWeekdays(weekdays => {
+      const updatedWeek = { ...weekdays, [weekdayIndex[num]]: value };
+      return updatedWeek;
+    });
+  }
 
   const updateSpecificDays = async () => {
     if(!UpdatingCalendar) {
@@ -45,11 +98,11 @@ const Settings = () => {
   }}
 
   const updateSpecificScheduleDays = async () => {
-    if(!UpdatingHours) {
+    if(!UpdatingSpecificHours) {
         return;
       } else {
         try {
-          //time is measured as integers from 0 to 93 so we are checking to make sure the user put the opening and closing times in the correct order
+          //Time is measured as integers from 0 to 93 so we are checking to make sure the user put the opening and closing times in the correct order
           if(Number(openingTime) < Number(closingTime)) {
             for(let i=0; i < secondListOfDays.length; i++) {
               await updateScheduleDay({
@@ -82,7 +135,7 @@ const Settings = () => {
     }
   }
 
-  //Because React Ref cannot be treated as a parameter, a duplicate function was needed
+  //Because React Ref cannot be treated as a parameter, a duplicate function was needed for Operation Four
   const addDayToSecondList = () => {
     if(calendarTwoId.current.getAttribute("year") == null || calendarTwoId.current.getAttribute("month") == null || calendarTwoId.current.getAttribute("day") == null) {
       return;
@@ -106,17 +159,81 @@ const Settings = () => {
   return (
     <section>
         <h1>Settings:</h1>
+        {/* Operation One: */}
+        <div>
+          <h2>Adjust Days Of the Week:</h2>
+          {!UpdatingWeekdayCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(true); setUpdatingSpecificHours(false); setUpdatingCalendar(false);}}>Change Which Weekdays You're Open For</button> : null}
+          {UpdatingWeekdayCalendar ? 
+          <section>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Sunday:</p>
+              <select className="weekdayInput" title="status" name="type" value={weekdays.Sun} onChange={(e) => {userChangingWeekday(0, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Monday:</p>
+              <select title="status" name="type" value={weekdays.Mon} onChange={(e) => {userChangingWeekday(1, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Tuesday:</p>
+              <select title="status" name="type" value={weekdays.Tue} onChange={(e) => {userChangingWeekday(2, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Wednesday:</p>
+              <select title="status" name="type" value={weekdays.Wed} onChange={(e) => {userChangingWeekday(3, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Thursday:</p>
+              <select title="status" name="type" value={weekdays.Thu} onChange={(e) => {userChangingWeekday(4, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Friday:</p>
+              <select title="status" name="type" value={weekdays.Fri} onChange={(e) => {userChangingWeekday(5, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <div className="flexRow weekdayDiv">
+              <p className="weekday">Saturday:</p>
+              <select title="status" name="type" value={weekdays.Sat} onChange={(e) => {userChangingWeekday(6, e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                <option value="true">Open</option>
+                <option value="false">Closed</option>
+              </select>
+            </div>
+            <button onClick={() => {updateWeekdays()}}>Save</button>
+          </section>
+          : null}
+        </div>
+        
+        {/* Operation Two: */}
         <div>
           <h2>Adjust Operating Hours:</h2>
         </div>
-        <div>
-          <h2>Adjust Days Of the Week:</h2>
-
-        </div>
-        {/* Updating Calendar: */}
+        {/* Operation Three: */}
         <div>
           <h2>Open/Close For Specific Days of the Year (Holidays, Birthdays, etc...):</h2>
-          <button onClick={() => {setUpdatingHours(false); setUpdatingCalendar(true)}}>Update Specific Operating Days</button>
+          {!UpdatingCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingSpecificHours(false); setUpdatingCalendar(true)}}>Update Specific Operating Days</button> : null}
           {UpdatingCalendar ? 
           <div>
             <p>Explore the Calendar and click the select button to add a date to the list:</p>
@@ -141,11 +258,11 @@ const Settings = () => {
           </div>
             : null}
         </div>
-        {/* Updating Hours: */}
+        {/* Operation Four: */}
         <div>
           <h2>Adjust Operating Hours For Specific Days (Example: Half Days):</h2>
-          <button onClick={() => {setUpdatingCalendar(false); setUpdatingHours(true)}}>Update Specific Operating Days</button>
-          {UpdatingHours ? 
+          {!UpdatingSpecificHours ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingCalendar(false); setUpdatingSpecificHours(true)}}>Update Specific Operating Days</button> : null}
+          {UpdatingSpecificHours ? 
           <div>
             <Calendar ref={calendarTwoId} year="" month="" day="" timeslots="" schedule="false"/>
             <button onClick={addDayToSecondList}>Select</button>

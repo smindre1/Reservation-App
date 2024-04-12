@@ -181,3 +181,18 @@ body {
 .text {
     margin: 0 5px;
 }
+
+.weekdayInput {
+    height: fit-content;
+    height: -moz-fit-content;
+    justify-content: center;
+}
+
+.weekdayDiv{
+    display: flex;
+    align-items: center;
+}
+
+.weekday {
+    margin: 4px 4px 4px 0;
+}

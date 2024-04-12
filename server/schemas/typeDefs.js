@@ -153,6 +153,8 @@ const typeDefs = `
         calendarDayOpenStatus(year: Int!, month: String!, day: Int!, open: Boolean!): Calendar
 
         updateScheduleDay(year: Int!, month: String!, day: Int!, openingTime: Int!, closingTime: Int!): DayPlans
+
+        calendarWeekdays(Sun: Boolean!, Mon: Boolean!, Tue: Boolean!, Wed: Boolean!, Thu: Boolean!, Fri: Boolean!, Sat: Boolean!): Calendar
     }
 `;
 

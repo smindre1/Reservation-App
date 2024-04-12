@@ -164,29 +164,66 @@ const resolvers = {
 
       monthData[day-1].timeSlots = dayPlans.timeSlots;
 
-      // dayPlans.timeSlots = updatedTimeSlots;
-      // const myPromise = new Promise((resolve, reject) => { 
-      //     resolve(dayPlans.timeSlots.map((timeSlot) => {
-      //       if(timeSlot.time < openingTime || timeSlot.time > closingTime) {
-      //         timeSlot.available = false;
-      //       } else {
-      //         timeSlot.available = true;
-
-      //       }
-      //     }));
-      // });
-
-      // myPromise.then(
-      //   () => {
-      //     // console.log(dayPlans, "q");
-      //     monthData[day-1].timeSlots = dayPlans.timeSlots;
-      //   }
-      // )
-
-      // monthData[day-1].timeSlots = dayPlans;
       const updatedSchedule = await Schedule.findOneAndUpdate({ year }, {[month]: monthData});
       return updatedSchedule;
     },
+    calendarWeekdays: async (parent, { Sun, Mon, Tue, Wed, Thu, Fri, Sat }) => {
+      let calendar = await Calendar.find();
+      let calendarMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      
+      const updateMonth = async (month) => {
+        const newMonth = [];
+        for(let i=0; i < month.length; i++) {
+          let reformedDay = {day: month[i].day, weekday: month[i].weekday, open: month[i].open};
+          newMonth.push(reformedDay);
+        }
+        
+        //Looping through each day of the month
+        newMonth.map((day) => {
+          if(day.weekday == 0) {
+            day.open = Sun;
+          } else if(day.weekday == 1) {
+            day.open = Mon;
+          } else if(day.weekday == 2) {
+            day.open = Tue;
+          } else if(day.weekday == 3) {
+            day.open = Wed;
+          } else if(day.weekday == 4) {
+            day.open = Thu;
+          } else if(day.weekday == 5) {
+            day.open = Fri;
+          } else {
+            day.open = Sat;
+          }
+          let newDay = {day: day.day, weekday: day.weekday, open: day.open, test: "why"}
+          return newDay;
+        })
+        return newMonth;
+      }
+
+      const updateYear = async (months) => {
+        let updatedMonths = {};
+        //Looping through each month of the year
+        for(let i=0; i < months.length; i++) {
+          let month = months[i];
+          const newMonth = await updateMonth(month);
+          updatedMonths[calendarMonths[i]] = newMonth;
+        }
+        return updatedMonths;
+      }
+
+      //Looping through each year
+      for(let i=0; i < calendar.length; i++) {
+        let year = calendar[i].year;
+        let {January, February, March, April, May, June, July, August, September, October, November, December} = calendar[i];
+        let months = [January, February, March, April, May, June, July, August, September, October, November, December];
+        const newYear = await updateYear(months);
+        await Calendar.findOneAndUpdate({ year }, newYear);
+      }
+      
+      // return updatedCalendar;
+    },
+
   },
 };
 
