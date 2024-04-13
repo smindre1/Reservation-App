@@ -161,7 +161,7 @@ const resolvers = {
           timeSlot.available = true;
         }
       });
-
+      //[day-1] because that is the difference between the day and the day's place in the month array
       monthData[day-1].timeSlots = dayPlans.timeSlots;
 
       const updatedSchedule = await Schedule.findOneAndUpdate({ year }, {[month]: monthData});
@@ -169,15 +169,18 @@ const resolvers = {
     },
     calendarWeekdays: async (parent, { Sun, Mon, Tue, Wed, Thu, Fri, Sat }) => {
       let calendar = await Calendar.find();
+      if(!calendar) {
+        throw new Error('Calendar Not Found!');
+      }
       let calendarMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      
+
+      //Updates a month with the user's input
       const updateMonth = async (month) => {
         const newMonth = [];
         for(let i=0; i < month.length; i++) {
           let reformedDay = {day: month[i].day, weekday: month[i].weekday, open: month[i].open};
           newMonth.push(reformedDay);
         }
-        
         //Looping through each day of the month
         newMonth.map((day) => {
           if(day.weekday == 0) {
@@ -195,12 +198,11 @@ const resolvers = {
           } else {
             day.open = Sat;
           }
-          let newDay = {day: day.day, weekday: day.weekday, open: day.open, test: "why"}
-          return newDay;
         })
         return newMonth;
       }
 
+      //Creates an object for a specific year with the months that have been updated with the user's input
       const updateYear = async (months) => {
         let updatedMonths = {};
         //Looping through each month of the year
@@ -212,7 +214,7 @@ const resolvers = {
         return updatedMonths;
       }
 
-      //Looping through each year
+      //Loops through each calendar year, updates the year, then updates the database with it
       for(let i=0; i < calendar.length; i++) {
         let year = calendar[i].year;
         let {January, February, March, April, May, June, July, August, September, October, November, December} = calendar[i];
@@ -223,11 +225,57 @@ const resolvers = {
       
       // return updatedCalendar;
     },
+    scheduleHours: async (parent, { open, close }) => {
+      let schedule = await Schedule.find();
+      if(!schedule) {
+        throw new Error('Schedule Not Found!');
+      }
+      let scheduleMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+      //Updates a month with the user's input
+      const updateMonth = async (month) => {
+        const newMonth = [];
+        for(let i=0; i < month.length; i++) {
+          let reformedDay = {day: month[i].day, timeSlots: month[i].timeSlots};
+          newMonth.push(reformedDay);
+        }
+        //Looping through each day of the month, in which it cycles/updates each timeSlot for each day
+        newMonth.map((day) => {
+          day.timeSlots.map((timeSlot) => {
+            if(timeSlot.time < open || timeSlot.time > close) {
+              timeSlot.available = false;
+            } else {
+              timeSlot.available = true;
+            }
+          });
+        })
+        return newMonth;
+      }
+
+      //Creates an object for a specific year with the months that have been updated with the user's input
+      const updateYear = async (months) => {
+        let updatedMonths = {};
+        //Looping through each month of the year
+        for(let i=0; i < months.length; i++) {
+          let month = months[i];
+          const newMonth = await updateMonth(month);
+          updatedMonths[scheduleMonths[i]] = newMonth;
+        }
+        return updatedMonths;
+      }
+
+      //Loops through each schedule year, updates the year, then updates the database with it
+      for(let i=0; i < schedule.length; i++) {
+        let year = schedule[i].year;
+        let {January, February, March, April, May, June, July, August, September, October, November, December} = schedule[i];
+        let months = [January, February, March, April, May, June, July, August, September, October, November, December];
+        const newYear = await updateYear(months);
+        await Schedule.findOneAndUpdate({ year }, newYear);
+      }
+      
+      // return updatedSchedule;
+    },
   },
 };
 
-// module.exports = {
-//   JSON: JSONScalar, resolvers: resolvers
-// };
 module.exports = resolvers;

@@ -2,8 +2,8 @@ import { useState, useEffect, useRef} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Auth from "../../utils/auth";
 import Calendar from "../components/Calendar";
-import { UPDATE_DAY_STATUS, UPDATE_SCHEDULE_DAY, UPDATE_CALENDAR_WEEKDAYS } from "../../utils/mutations";
-import { GET_CALENDAR_MONTH } from '../../utils/queries';
+import { UPDATE_DAY_STATUS, UPDATE_SCHEDULE_DAY, UPDATE_CALENDAR_WEEKDAYS, UPDATE_SCHEDULE_HOURS } from "../../utils/mutations";
+import { GET_CALENDAR_MONTH, GET_SCHEDULE } from '../../utils/queries';
 import TimeSlotIndex from "../assets/TimeSlotIndex.js";
 
 //This settings page conducts four operations for the user to customize there business/reservation schedule.
@@ -24,7 +24,10 @@ const Settings = () => {
   //Operation One:
   const [UpdatingWeekdayCalendar, setUpdatingWeekdayCalendar] = useState(false);
   const [weekdays, setWeekdays] = useState({Sun: "", Mon: "", Tue: "", Wed: "", Thu: "", Fri: "", Sat: ""});
-
+  //Operation Two:
+  const [UpdatingBusinessHours, setUpdatingBusinessHours] = useState(false);
+  const [businessOpeningTime, setBusinessOpeningTime] = useState();
+  const [businessClosingTime, setBusinessClosingTime] = useState();
   //Operation Three:
   const [UpdatingCalendar, setUpdatingCalendar] = useState(false);
   const [OperationChange, setOperationChange] = useState("");
@@ -41,13 +44,16 @@ const Settings = () => {
   const calendarTwoId = useRef(null);
   const [updateDay, { error, data }] = useMutation(UPDATE_DAY_STATUS);
   const [updateScheduleDay, { error: ScheduleError, data: ScheduleDay }] = useMutation(UPDATE_SCHEDULE_DAY);
+
   //The variables for the calendar month are for the test year that acts as a control group
   //It's only purpose is to reliably measure overall pattern changes applied to the calendar
   //Operation One:
   const { loading: wait, calendarError, data: calendarMonth} = useQuery(GET_CALENDAR_MONTH, {variables: {year: 1000, month: "January"}});
   const [updateCalendarWeekdays, { error: CalendarWeekError, data: CalendarWeek }] = useMutation(UPDATE_CALENDAR_WEEKDAYS);
-
-  
+  //Operation Two:
+  const { loading: loadingBusinessHours, error: scheduleError, data: schedule} = useQuery(GET_SCHEDULE, {variables: {year: 1000, month: "January", day: 1}});
+  const [updateScheduleHours, { error: ScheduleHoursError, data: ScheduleHours }] = useMutation(UPDATE_SCHEDULE_HOURS);
+  //Operation One: =======================================================================================
   useEffect(() => {
     let weekdayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     if (!wait) {
@@ -59,18 +65,20 @@ const Settings = () => {
     }
 }, [wait])
 
-  //Operation One:
   const updateWeekdays = async () => {
+    const qualification = userCheck();
+    if(!qualification) {
+      window.location.replace('/');
+      return;
+    }
     await updateCalendarWeekdays({
       variables: { Sun: JSON.parse(weekdays.Sun), Mon: JSON.parse(weekdays.Mon), Tue: JSON.parse(weekdays.Tue), Wed: JSON.parse(weekdays.Wed), Thu: JSON.parse(weekdays.Thu), Fri: JSON.parse(weekdays.Fri), Sat: JSON.parse(weekdays.Sat) }
     });
+    
   }
 
   const userChangingWeekday = (num, value) => {
     let weekdayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    console.log(value, "value");
-    // let updatedWeek = Object.assign(weekdays, {[weekdayIndex[num]]: value})
-    // setWeekdays(updatedWeek);
 
     setWeekdays(weekdays => {
       const updatedWeek = { ...weekdays, [weekdayIndex[num]]: value };
@@ -78,7 +86,45 @@ const Settings = () => {
     });
   }
 
+  //Operation Two: =======================================================================================
+  useEffect(() => {
+    if (!loadingBusinessHours) {
+      const times = schedule.schedule.map((timeSlot) => {
+        return timeSlot.time;
+      });
+      const min = Math.min(...times);
+      const max = Math.max(...times);
+      setBusinessOpeningTime(min);
+      setBusinessClosingTime(max == 95? max : max + 1);
+    }
+  }, [loadingBusinessHours])
+
+  const updateBusinessHours = async () => {
+    const qualification = userCheck();
+    if(!qualification) {
+      window.location.replace('/');
+      return;
+    }
+    let opening = Number(businessOpeningTime);
+    let closing = Number(businessClosingTime) - 1;
+    if(opening < closing) {
+    await updateScheduleHours({
+      variables: { open: opening , close: closing}
+      })
+    } else {
+    await updateScheduleHours({
+      variables: { open: closing + 1 , close: opening - 1}
+      })
+    }
+  }
+
+  //Operation Three: =======================================================================================
   const updateSpecificDays = async () => {
+    const qualification = userCheck();
+    if(!qualification) {
+      window.location.replace('/');
+      return;
+    }
     if(!UpdatingCalendar) {
         return;
       } else {
@@ -89,31 +135,6 @@ const Settings = () => {
             for(let i=0; i < listOfDays.length; i++) {
               await updateDay({
                   variables: { year: Number(listOfDays[i].year) , month: listOfDays[i].month, day: Number(listOfDays[i].day), open: openStatus}
-                  });
-            }
-          }
-        } catch (err) {
-          console.error(err);
-        }
-  }}
-
-  const updateSpecificScheduleDays = async () => {
-    if(!UpdatingSpecificHours) {
-        return;
-      } else {
-        try {
-          //Time is measured as integers from 0 to 93 so we are checking to make sure the user put the opening and closing times in the correct order
-          if(Number(openingTime) < Number(closingTime)) {
-            for(let i=0; i < secondListOfDays.length; i++) {
-              await updateScheduleDay({
-                  variables: { year: Number(secondListOfDays[i].year) , month: secondListOfDays[i].month, day: Number(secondListOfDays[i].day), openingTime: Number(openingTime), closingTime: Number(closingTime)}
-                  });
-            }
-          } else {
-            //This is in the event the user has openingTime > closingTime, which translates to them accidetally inputing the oposite times
-            for(let i=0; i < secondListOfDays.length; i++) {
-              await updateScheduleDay({
-                  variables: { year: Number(secondListOfDays[i].year) , month: secondListOfDays[i].month, day: Number(secondListOfDays[i].day), openingTime: Number(closingTime), closingTime: Number(openingTime)}
                   });
             }
           }
@@ -134,6 +155,37 @@ const Settings = () => {
       setListOfDays(list);
     }
   }
+
+  //Operation Four: =======================================================================================
+  const updateSpecificScheduleDays = async () => {
+    const qualification = userCheck();
+    if(!qualification) {
+      window.location.replace('/');
+      return;
+    }
+    if(!UpdatingSpecificHours) {
+        return;
+      } else {
+        try {
+          //Time is measured as integers from 0 to 95 so we are checking to make sure the user put the opening and closing times in the correct order
+          if(Number(openingTime) < Number(closingTime)) {
+            for(let i=0; i < secondListOfDays.length; i++) {
+              await updateScheduleDay({
+                  variables: { year: Number(secondListOfDays[i].year) , month: secondListOfDays[i].month, day: Number(secondListOfDays[i].day), openingTime: Number(openingTime), closingTime: Number(closingTime)}
+                  });
+            }
+          } else {
+            //This is in the event the user has openingTime > closingTime, which translates to them accidetally inputing the oposite times
+            for(let i=0; i < secondListOfDays.length; i++) {
+              await updateScheduleDay({
+                  variables: { year: Number(secondListOfDays[i].year) , month: secondListOfDays[i].month, day: Number(secondListOfDays[i].day), openingTime: Number(closingTime), closingTime: Number(openingTime)}
+                  });
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+  }}
 
   //Because React Ref cannot be treated as a parameter, a duplicate function was needed for Operation Four
   const addDayToSecondList = () => {
@@ -156,13 +208,33 @@ const Settings = () => {
     }))
   }
 
+  //Authentication: =======================================================================================
+  const userCheck = () => {
+    let user = Auth.getProfile();
+    let position = user.data ? user.data.position : "Invalid";
+    if(position == "Admin" || position == "Boss") {
+      return true;
+    } else {
+      window.location.replace('/');
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    const qualification = userCheck();
+    if(!qualification) {
+      window.location.replace('/');
+      return;
+    }
+  }, [])
+
   return (
     <section>
         <h1>Settings:</h1>
         {/* Operation One: */}
         <div>
           <h2>Adjust Days Of the Week:</h2>
-          {!UpdatingWeekdayCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(true); setUpdatingSpecificHours(false); setUpdatingCalendar(false);}}>Change Which Weekdays You're Open For</button> : null}
+          {!UpdatingWeekdayCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(true); setUpdatingBusinessHours(false); setUpdatingSpecificHours(false); setUpdatingCalendar(false);}}>Change Which Weekdays You're Open For</button> : null}
           {UpdatingWeekdayCalendar ? 
           <section>
             <div className="flexRow weekdayDiv">
@@ -225,15 +297,34 @@ const Settings = () => {
           </section>
           : null}
         </div>
-        
         {/* Operation Two: */}
         <div>
           <h2>Adjust Operating Hours:</h2>
+          {!UpdatingBusinessHours ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingBusinessHours(true); setUpdatingSpecificHours(false); setUpdatingCalendar(false);}}>Change Your Business' General Operating Hours</button> : null}
+          {UpdatingBusinessHours ? 
+          <section>
+            <div className="flexRow">
+              <p className="text"> Business/Store Opens At: </p>
+              <select className="timeInput" title="openingTime" name="type" value={businessOpeningTime} onChange={(e) => {setBusinessOpeningTime(e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                {timeSlotOptions()}
+              </select>
+            </div>
+            <div className="flexRow">
+              <p className="text"> Business/Store Closes At: </p>
+              <select className="timeInput" title="closingTime" name="type" value={businessClosingTime} onChange={(e) => {setBusinessClosingTime(e.target.value)}}>
+                <option value="" disabled>-Select-</option>
+                {timeSlotOptions()}
+              </select>
+            </div>
+            <button onClick={() => {updateBusinessHours()}}>Save</button>
+          </section>
+          : null}
         </div>
         {/* Operation Three: */}
         <div>
           <h2>Open/Close For Specific Days of the Year (Holidays, Birthdays, etc...):</h2>
-          {!UpdatingCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingSpecificHours(false); setUpdatingCalendar(true)}}>Update Specific Operating Days</button> : null}
+          {!UpdatingCalendar ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingBusinessHours(false); setUpdatingSpecificHours(false); setUpdatingCalendar(true)}}>Update Specific Operating Days</button> : null}
           {UpdatingCalendar ? 
           <div>
             <p>Explore the Calendar and click the select button to add a date to the list:</p>
@@ -261,7 +352,7 @@ const Settings = () => {
         {/* Operation Four: */}
         <div>
           <h2>Adjust Operating Hours For Specific Days (Example: Half Days):</h2>
-          {!UpdatingSpecificHours ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingCalendar(false); setUpdatingSpecificHours(true)}}>Update Specific Operating Days</button> : null}
+          {!UpdatingSpecificHours ? <button onClick={() => {setUpdatingWeekdayCalendar(false); setUpdatingBusinessHours(false); setUpdatingCalendar(false); setUpdatingSpecificHours(true)}}>Update Specific Operating Days</button> : null}
           {UpdatingSpecificHours ? 
           <div>
             <Calendar ref={calendarTwoId} year="" month="" day="" timeslots="" schedule="false"/>

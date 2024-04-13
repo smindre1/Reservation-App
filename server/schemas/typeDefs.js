@@ -129,6 +129,7 @@ const typeDefs = `
         schedule(year: Int!, month: String!, day: Int!): [timeSlots]
         calendar: [Calendar]
         getCalendarMonth(year: Int!, month: String!): [Days]
+
     }
 
     type Mutation {
@@ -148,13 +149,16 @@ const typeDefs = `
 
         addCalendarYear(year: Int!, January: [DayData]!, February: [DayData]!, March: [DayData]!, April: [DayData]!, May: [DayData]!, June: [DayData]!, July: [DayData]!, August: [DayData]!, September: [DayData]!, October: [DayData]!, November: [DayData]!, December: [DayData]!): Calendar
 
-        addScheduleYear(year: Int!, January: [DayPlanData]!, February: [DayPlanData]!, March: [DayPlanData]!, April: [DayPlanData]!, May: [DayPlanData]!, June: [DayPlanData]!, July: [DayPlanData]!, August: [DayPlanData]!, September: [DayPlanData]!, October: [DayPlanData]!, November: [DayPlanData]!, December: [DayPlanData]!): Schedule
-
         calendarDayOpenStatus(year: Int!, month: String!, day: Int!, open: Boolean!): Calendar
+
+        calendarWeekdays(Sun: Boolean!, Mon: Boolean!, Tue: Boolean!, Wed: Boolean!, Thu: Boolean!, Fri: Boolean!, Sat: Boolean!): Calendar
+
+        addScheduleYear(year: Int!, January: [DayPlanData]!, February: [DayPlanData]!, March: [DayPlanData]!, April: [DayPlanData]!, May: [DayPlanData]!, June: [DayPlanData]!, July: [DayPlanData]!, August: [DayPlanData]!, September: [DayPlanData]!, October: [DayPlanData]!, November: [DayPlanData]!, December: [DayPlanData]!): Schedule
 
         updateScheduleDay(year: Int!, month: String!, day: Int!, openingTime: Int!, closingTime: Int!): DayPlans
 
-        calendarWeekdays(Sun: Boolean!, Mon: Boolean!, Tue: Boolean!, Wed: Boolean!, Thu: Boolean!, Fri: Boolean!, Sat: Boolean!): Calendar
+        scheduleHours(open: Int!, close: Int!): Schedule
+
     }
 `;
 

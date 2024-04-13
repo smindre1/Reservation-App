@@ -153,6 +153,23 @@ export const UPDATE_CALENDAR_WEEKDAYS = gql`
   }
 `;
 
+
+
+export const UPDATE_SCHEDULE_HOURS = gql`
+  mutation scheduleHours($open: Int!, $close: Int!) {
+    scheduleHours(open: $open, close: $close) {
+      year
+      January {
+        day
+        timeSlots {
+          time
+          available
+        }
+      }
+    }
+  }
+`;
+
 // export const ADD_YEAR = gql`
 //   mutation addYear($year: Int!, $January: [Days]!, $February: [Days]!, $March: [Days]!, $April: [Days]!, $May: [Days]!, $June: [Days]!, $July: [Days]!, $August: [Days]!, $September: [Days]!, $October: [Days]!, $November: [Days]!, $December: [Days]!) {
 //     addReservation(year: $year, January: $January, February: $February, March: $March, April: $April, May: $May, June: $June, July: $July, August: $August, September: $September, October: $October, November: $November, December: $December) {
