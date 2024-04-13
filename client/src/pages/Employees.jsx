@@ -17,6 +17,20 @@ const Employees = () => {
     useEffect(() => {
         employeeList();
     }, [wait])
+
+    const positionColor = (position) => {
+        if(position === "Admin") {
+            return 'admin employeeData'
+        } else if(position === "Boss") {
+            return 'boss employeeData'
+        } else if(position === "Manager") {
+            return 'manager employeeData'
+        } else if(position === 'Employee') {
+            return 'employee employeeData'
+        } else {
+            return 'employeeData'
+        }
+    }
     
 
     return(
@@ -26,7 +40,34 @@ const Employees = () => {
             {loadRoster.length
             ? <h2 className='alignText'>Viewing {loadRoster.length} {loadRoster.length === 1 ? 'Employee' : 'Employees'}</h2>
             : <h2 className='alignText'>There are no Employees!</h2>}
-            {loadRoster.map((user) => {
+            <section className='flexRow employeeRoster'>
+                <div>
+                    <p className='columnLabel'>Name:</p>
+                    {loadRoster.map((user) => {
+                    return (<p key={user._id} className='employeeData'>{user?.fullName || "No Available Name"}</p>);
+                    })}
+                </div>
+                <div>
+                    <p className='columnLabel'>Email:</p>
+                    {loadRoster.map((user) => {
+                    return (<p key={user._id} className='employeeData'>{user?.email || "No Available Name"}</p>);
+                    })}
+                </div>
+                <div>
+                    <p className='columnLabel'>Phone Number:</p>
+                    {loadRoster.map((user) => {
+                    return (<p key={user._id} className='employeeData'>{user?.phone || "No Available Name"}</p>);
+                    })}
+                </div>
+                <div>
+                    <p className='columnLabel'>Position:</p>
+                    {loadRoster.map((user) => {
+                    return (<p key={user._id} className={positionColor(user?.position)}>{user?.position || "No Available Name"}</p>);
+                    })}
+                </div>
+               
+            </section>
+            {/* {loadRoster.map((user) => {
                 return (
                 <div key={user._id}>
                     <h3 className='alignText'>Name: {user?.fullName || "No Available Name"}</h3>
@@ -35,7 +76,7 @@ const Employees = () => {
                     <p className='alignText'>{user?.position || "Unknown"}</p>
                 </div>
                 );
-            })}
+            })} */}
 
         </div>
     );

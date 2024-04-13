@@ -8,6 +8,7 @@ const Calendar = forwardRef((props, ref) => {
     const calendarId = ref;
     const today = new Date();
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const weekdayLabels = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
 
     const [loadYear, setYear] = useState(today.getFullYear());
     const [loadMonth, setMonth] = useState(months[today.getMonth()]);
@@ -40,6 +41,7 @@ const Calendar = forwardRef((props, ref) => {
     const displayDays = (year, month) => {
         const specificYear = calendar.calendar.find((calYears) => calYears.year == year);
         setDays(specificYear[month]);
+        console.log(specificYear[month], "days");
     };
 
     const checkIfClosed = (days) => {
@@ -77,6 +79,16 @@ const Calendar = forwardRef((props, ref) => {
                         return <option value={month} key={month}>{month}</option>
                     }) : null}
                 </select>
+                {loadDays ? 
+                <div className='flexRow'>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[0].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[1].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[2].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[3].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[4].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[5].weekday]}</p>
+                    <p className='calendarDayLabel'>{weekdayLabels[loadDays[6].weekday]}</p>
+                </div> : null}
                 <div className='calendarDays'>
                     {loadDays ?
                         loadDays.map((days) => {

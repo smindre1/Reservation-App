@@ -109,7 +109,14 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     width: 200px;
-    margin: 8px 0 0 0;
+    /* margin: 8px 0 0 0; */
+}
+
+.calendarDayLabel {
+    width: 20px;
+    padding: 4px;
+    margin: 4px 0 0 0;
+    color: #a4a4a4;
 }
 
 .calendarDay {
@@ -169,6 +176,45 @@ body {
     display: flex;
     flex-direction: row;
     margin: 4px 0 4px 0;
+}
+
+/* ----------------------- Employee Roster Page ------------------------------ */
+
+.employeeRoster {
+    margin: 5px 0 0 6px;
+    /* border: solid #000000 2px; */
+}
+
+.columnLabel {
+    font-weight: 700;
+    margin: 0;
+    padding: 8px 6px 8px 6px;
+    border: solid #373737 1px;
+    background-color: #eaeaea;
+}
+
+.employeeData {
+    padding: 8px 6px 8px 6px;
+    margin: 0;
+    /* width: fit-content;
+    width: -moz-fit-content; */
+    border: solid #373737 1px;
+}
+
+.admin {
+    color: #a10303;
+}
+
+.boss {
+    color: #151774;
+}
+
+.manager {
+    color:#c75d06;
+}
+
+.employee {
+    color: #10840e;
 }
 
 /* ----------------------- Settings Page ------------------------------ */
