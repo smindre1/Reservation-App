@@ -27,6 +27,12 @@ const typeDefs = `
         type: String!
         client: String!
         price: Int!
+        addOns: [AddOns]
+    }
+
+    type AddOns {
+        addition: String
+        price: Int
     }
 
     type Payment {
@@ -111,6 +117,12 @@ const typeDefs = `
         type: String!
         client: String!
         price: Int!
+        addOns: AddOnData
+    }
+
+    input AddOnData {
+        addition: String
+        price: Int
     }
 
     input paymentData {

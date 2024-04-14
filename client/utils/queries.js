@@ -37,6 +37,10 @@ query getReservations {
       client
       price
       type
+      addOns {
+        addition
+        price
+      }
     }
     specialRequests
   }
@@ -56,6 +60,10 @@ export const GET_RESERVATION = gql`
           type
           client
           price
+          addOns {
+            addition
+            price
+          }
         }
         specialRequests
     }

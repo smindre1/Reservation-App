@@ -31,6 +31,10 @@ body {
     font-weight: 900;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .flexRow {
     display: flex;
     flex-direction: row;
@@ -81,9 +85,12 @@ body {
 /* ----------------------- Reservations Page ------------------------------ */
 
 .clientReservationCard {
-    background-color: #cccccc;
-    padding: 9px 0 9px 18px;
+    background-color: #f0f0f0;
+    padding: 9px 18px 9px 18px;
     margin: 0 0 18px 0;
+        width: fit-content;
+    width: -moz-fit-content;
+    border: solid #cccccc 2px;
 }
 
 /* .clientName {
@@ -91,11 +98,40 @@ body {
 } */
 
 .cardText {
+    font-size: 16px;
+    margin: 0;
+}
+
+.serviceText {
     font-size: 18px;
+    margin: 0;
+}
+
+.sectionLabel {
+    font-weight: 700;
+    margin: 0;
+    padding: 8px 6px 8px 6px;
+    border: solid #373737 1px;
+    background-color: #dbdbdb;
+}
+
+.reservationData {
+    padding: 8px 6px 8px 6px;
+    margin: 0;
+    /* width: fit-content;
+    width: -moz-fit-content; */
+    border: solid #373737 1px;
+    font-size: 16px;
 }
 
 .serviceItemCard {
-    border-top: dotted black 2px;
+    /* border-top: dotted black 2px; */
+    padding: 8px 6px 8px 6px;
+    margin: 0;
+    /* width: fit-content;
+    width: -moz-fit-content; */
+    border: solid #373737 1px;
+    font-size: 16px;
 }
 
 .calendar {

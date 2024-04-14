@@ -98,8 +98,8 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addReservation: async (parent, { name, email, phone, day, appointmentTime, services, specialRequests, payment }) => {
-      const reservation = await Reservation.create({ name, email, phone, day, appointmentTime, services, specialRequests, payment });
+    addReservation: async (parent, context) => {
+      const reservation = await Reservation.create(context);
       return reservation;
     },
     updateReservation: async (parent, context) => {

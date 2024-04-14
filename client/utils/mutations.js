@@ -74,6 +74,10 @@ export const UPDATE_RESERVATION = gql`
         type
         client
         price
+        addOns {
+          addition
+          price
+        }
       }
       specialRequests
       payment {

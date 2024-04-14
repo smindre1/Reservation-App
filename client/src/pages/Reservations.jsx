@@ -45,21 +45,42 @@ const Reservations = () => {
             {loadRoster.length
             ? <p className='alignText'>Viewing {loadRoster.length} {loadRoster.length === 1 ? 'Reservation' : 'Reservations'}:</p>
             : <p className='alignText'>There are no Reservations Currently</p>}
+
             {loadRoster.map((reservation) => {
                 return (
                 <div className='clientReservationCard' key={reservation._id} reservationid={reservation._id} onClick={recordId}>
                     <p className='cardText'>{TimeSlotIndex[reservation?.appointmentTime] || "none"} (Appointment Time)</p>
-                    <p className='cardText bold'>Client's Name: {reservation?.name || "No name"}</p>
-                    <p className='cardText bold'>Email: {reservation?.email || "none"}</p>
-                    <p className='cardText'>Phone Number: {reservation?.phone || "none"}</p>
-                    <p className='cardText'>Service(s):</p>
+                    <div className='flexRow'>
+                        <section>
+                            <p className='sectionLabel bold'>Client's Name</p>
+                            <p className='reservationData'>{reservation?.name || "No name"}</p>
+                        </section>
+                        <section>
+                            <p className='sectionLabel bold'>Email:</p>
+                            <p className='reservationData bold'>{reservation?.email || "none"}</p>
+                        </section>
+                        <section>
+                            <p className='sectionLabel'>Phone Number:</p>
+                            <p className='reservationData'>{reservation?.phone || "none"}</p>
+                        </section>
+                        
+                    </div>
+                    <p className='sectionLabel cardText'>Service(s):</p>
 
                     {reservation.services.map((service) => {
                         return (
                         <div className='serviceItemCard'>
-                            <p className='cardText'>{service.type}</p>
+                            <p className='cardText bold'>{service.type}</p>
                             <p className='cardText'>For: {service.client}</p>
-                            <p className='cardText'>${service.price}</p>
+                            <p className='cardText'>Price: ${service.price}</p>
+                            <p className='cardText'>AddOns:</p>
+                            {service.addOns.length < 1 ? <p className='cardText'>None</p> : null}
+                            {service?.addOns.map((extraItem) => {
+                                return(<div>
+                                    <p className='cardText'>Addition: {extraItem.addition}</p>
+                                    <p className='cardText'>Added Price: ${extraItem.price}</p>
+                                </div>)
+                            })}
                         </div>
                         )
                     })}

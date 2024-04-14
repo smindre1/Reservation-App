@@ -92,6 +92,7 @@ const ReservationForm = () => {
     const month = calendarId.current.getAttribute("month");
     const day = calendarId.current.getAttribute("day");
     const date = `${month} ${day}, ${year}`;
+    const allAddOns = [{addition: null, price: null}];
     let timeslots = calendarId.current.getAttribute("timeslots");
     timeslots = timeslots.replaceAll(',', ', ');
     timeslots = `[${timeslots}]`;
