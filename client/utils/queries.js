@@ -148,17 +148,3 @@ export const GET_SCHEDULE = gql`
     }
   }
 `;
-
-// export const GET_SCHEDULE = gql`
-//   query schedule($year: Int!, $month: String!, $day: Int!) {
-//     schedule(year: $year) {
-//       [month](day: $day) {
-//         day
-//         timeSlots {
-//           time
-//           available
-//         }
-//       }
-//     }
-//   }
-// `;

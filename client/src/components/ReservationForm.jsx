@@ -130,25 +130,25 @@ const ReservationForm = () => {
     <form className="signupForm" autoComplete="off" onSubmit={handleSubmit}>
       <h2>Make Your Reservation(s)</h2>
       <div ref={divId} className="formDiv">
-        <div ref={nameId} className="flexColumn formSection">
+        <div ref={nameId} className="formSection">
           <input className="formFields" type="text" placeholder="Full Name" autoComplete="off" value={name} onChange={(e) => {setName(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Full Name cannot be blank</p>
         </div>
-        <div ref={emailId} className="flexColumn formSection">
+        <div ref={emailId} className="formSection">
           <input className="formFields" type="text" placeholder="Email" autoComplete="off" value={email} onChange={(e) => {setEmail(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Email cannot be blank</p>
         </div>
       </div>
       <div className="formDiv">
-        <div ref={numberId} className="flexColumn formSection">
+        <div ref={numberId} className="formSection">
           <input className="formFields" type="tel" placeholder="Phone Number" autoComplete="off" value={number} onChange={(e) => {setNumber(e.target.value); handlePhone(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Phone Number cannot be blank</p>
         </div>
       </div>
-      <div className="flexColumn">
+      <div>
 
         {/* Services */}
-        <div className="flexColumn">
+        <div>
           <input className="formFields" type="text" placeholder="Type of Service" autoComplete="off" value={serviceType} onChange={(e) => {setServiceType(e.target.value)}} />
           
           <input className="formFields" type="text" placeholder="Client for Service" autoComplete="off" value={serviceClient} onChange={(e) => {setServiceClient(e.target.value)}} />
@@ -156,11 +156,11 @@ const ReservationForm = () => {
           <input className="formFields" type="text" placeholder="Price" autoComplete="off" value={servicePrice} onChange={(e) => {setServicePrice(e.target.value)}} />
         </div>
 
-        <div ref={specialRequestsId} className="flexColumn">
+        <div ref={specialRequestsId}>
           <input className="formFields" type="text" placeholder="Special Requests" autoComplete="off" value={specialRequests} onChange={(e) => {setSpecialRequests(e.target.value)}} />
         </div>
 
-        <div ref={appointmentTimeId} className="flexColumn">
+        <div ref={appointmentTimeId}>
           <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="true"/>
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div>

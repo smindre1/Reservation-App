@@ -65,13 +65,13 @@ const resolvers = {
       return { token, user };
     },
     updateUser: async (parent, context) => {
-      if (context.user) {
+      if (context.userId) {
 
-        const user = await User.findOneAndUpdate({ _id: context.user._id }, context.user );
+        const user = await User.findOneAndUpdate({ _id: context.userId }, context );
 
         return user;
       }
-      throw AuthenticationError("You need to be logged in!");
+      // throw AuthenticationError("You need to be logged in!");
     },
     deleteUser: async (parent, { userId }) => {
       const user = await User.findOneAndDelete({

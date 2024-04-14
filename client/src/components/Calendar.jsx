@@ -41,7 +41,7 @@ const Calendar = forwardRef((props, ref) => {
     const displayDays = (year, month) => {
         const specificYear = calendar.calendar.find((calYears) => calYears.year == year);
         setDays(specificYear[month]);
-        console.log(specificYear[month], "days");
+        
     };
 
     const checkIfClosed = (days) => {

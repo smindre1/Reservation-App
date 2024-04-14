@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
-import { useMutation } from '@apollo/client';
+import { useState, useRef, useEffect } from "react";
+import { useMutation, useQuery } from '@apollo/client';
 import { ADD_EMPLOYEE } from '../../utils/mutations';
+import { GET_EMPLOYEES } from '../../utils/queries';
 // import Popup from '../components/Popup';
 import Auth from '../../utils/auth';
 
@@ -9,7 +10,6 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [position, setPosition] = useState("Invalid");
   //Used for the popup, but I plan to redirect page so it may not be necessary.
   const [success, setSuccess] = useState(false);
 
@@ -17,14 +17,26 @@ const SignupForm = () => {
   const emailId = useRef(null);
   const numberId = useRef(null);
   const passwordId = useRef(null);
-  const positionId = useRef(null);
   const divId = useRef(null);
 
   const [addUser, { error, data }] = useMutation(ADD_EMPLOYEE);
+  const { loading: wait, error: employeeError, data: employeeRoster} = useQuery(GET_EMPLOYEES);
+
+  const checkForFirstUser = () => {
+    if(!wait) {
+      if(employeeRoster.users.length == 0) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      setTimeout(checkForFirstUser(), 2000);
+    }
+  }
 
   const checkForm = () => {
     //Creates an array of each form field
-    const items = [{value: name, id: nameId}, {value: email, id: emailId}, {value: number, id: numberId}, {value: password, id: passwordId}, {value: position, id: positionId}];
+    const items = [{value: name, id: nameId}, {value: email, id: emailId}, {value: number, id: numberId}, {value: password, id: passwordId}];
     //Checks that each field has content, otherwise changes to error state
     items.forEach((item) => {
       if(item.value == "") {
@@ -69,10 +81,12 @@ const SignupForm = () => {
     e.preventDefault();
     checkForm();
     //An empty field will prevent the form from submitting
-    if(name == "" || email == "" || number == "" || password == "" || position == "") {
+    if(name == "" || email == "" || number == "" || password == "") {
       setSuccess(false);
       e.stopPropagation();
     } else {
+      
+      const position = checkForFirstUser() ? "Admin" : "Invalid";
       const userFormData = { fullName: name, email: email, phone: number, password: password, position: position };
 
       try {
@@ -89,7 +103,6 @@ const SignupForm = () => {
       setEmail("");
       setNumber("");
       setPassword("");
-      setPosition("Invalid");
       //State change initiates popup
       setSuccess(true);
     }
@@ -118,10 +131,6 @@ const SignupForm = () => {
         <div ref={passwordId} className="flexColumn">
           <input className="formFields" type="text" placeholder="Password" autoComplete="off" value={password} onChange={(e) => {setPassword(e.target.value); handleChange(e)}} />
           <p className="errorTxt hide">Password cannot be blank</p>
-        </div>
-        <div ref={positionId} className="flexColumn">
-          <input className="formFields" type="text" placeholder="Position" autoComplete="off" value={position} onChange={(e) => {setPosition(e.target.value); handleChange(e)}} />
-          <p className="errorTxt hide">Position cannot be blank</p>
         </div>
         <button className="formBtn" type="submit">Submit</button>
       </div>

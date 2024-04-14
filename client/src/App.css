@@ -36,6 +36,11 @@ body {
     flex-direction: row;
 }
 
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
 /* ----------------------- Portal ------------------------------ */
 .portal {
     display: flex;
@@ -199,6 +204,17 @@ body {
     /* width: fit-content;
     width: -moz-fit-content; */
     border: solid #373737 1px;
+    font-size: 16px;
+}
+
+.employeeDataInput {
+    padding: 8px 6px 8px 6px;
+    margin: 0;
+    /* width: fit-content;
+    width: -moz-fit-content; */
+    border: solid #373737 1px;
+    font-size: 15px;
+    font-family: serif;
 }
 
 .admin {
