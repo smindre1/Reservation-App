@@ -149,10 +149,15 @@ export const GET_CALENDAR_MONTH = gql`
 `;
 
 export const GET_SCHEDULE = gql`
-  query schedule($year: Int!, $month: String!, $day: Int!) {
-    schedule(year: $year, month: $month, day: $day) {
-      time
-      available
+  query schedule($year: Int!, $month: String!, $day: Int!, $itemCategory: Int!) {
+    schedule(year: $year, month: $month, day: $day, itemCategory: $itemCategory) {
+      timeSlots {
+        time
+        availability {
+          room
+          available
+        }
+      }
     }
   }
 `;
@@ -161,6 +166,9 @@ export const GET_INVENTORY_LIST = gql`
   query getInventoryList {
     getInventoryList {
       ItemCategory
+      Rooms {
+        Room
+      }
       Items {
         Item
         Prices {

@@ -1,11 +1,19 @@
 const db = require('../config/connection');
-const { Calendar, Schedule } = require('../models');
+const { Calendar, Schedule, Inventory } = require('../models');
 // import { defaultTimeSlots } from './timeSlots.js';
 const defaultTimeSlots = require('./timeSlots');
+const defaultInventoryItems = require('./services');
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
+
+//Builds Default Inventory for Massage Salon
+const buildInventories = async () => {
+  for(let i =0; i < defaultInventoryItems.length; i++) {
+    await Inventory.create(defaultInventoryItems[i]);
+  }
+}
 
 //This function builds the test calendar year 1000 which will be used as a control variable to check and record user adjustments to the overall calendar, specifically which weekdays to be open for.
 const buildTestCalendarYear = (year) => {
@@ -66,6 +74,7 @@ const buildCalendar = async () => {
   for(i = 0; i < 5; i++) {
     let newYear = buildCalendarYear(count);
     await Calendar.create(newYear);
+    console.log(`Calendar Year: ${count} Done`);
     count = count + 1;
   }
 }
@@ -120,6 +129,7 @@ const buildSchedule = async () => {
   for(i = 0; i < 5; i++) {
     let newYear = buildScheduleYear(count);
     await Schedule.create(newYear);
+    console.log(`Schedule Year: ${count} Done`);
     count = count + 1;
   }
 }
@@ -134,12 +144,27 @@ db.once('open', async () => {
     // const testing = Schedule.find();
     // console.log(testing[0], "Test");
     // testing[0] ? console.log("Stuff") : console.log("nothing");
+    console.log("Now Building Inventories");
+    await buildInventories();
+    console.log("Inventories Done");
+
+    console.log("Now Building Calendar");
     await buildCalendar();
+    console.log("Calendar Done");
+
+    console.log("Now Building Schedule");
     await buildSchedule();
+    console.log("Schedule Done");
+
     let testCalendarYear = buildTestCalendarYear(1000);
+    testCalendarYear ? console.log("Now Building Test Calendar Year") : null;
     await Calendar.create(testCalendarYear);
+    testCalendarYear ? console.log("Test Calendar Year Done") : null;
+
     let testScheduleYear = buildTestScheduleYear(1000);
+    testScheduleYear ? console.log("Now Building Test Schedule Year") : null;
     await Schedule.create(testScheduleYear);
+    testScheduleYear ? console.log("Test Schedule Year Done") : null;
 
   } catch (err) {
     console.error(err);

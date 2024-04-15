@@ -5,6 +5,12 @@ const inventorySchema = new Schema({
         type: Number,
         required: true,
     },
+    Rooms: [{
+        Room: {
+            type: Number,
+            required: true,
+        }
+    }],
     Items: [{
         Item: {
             type: String,

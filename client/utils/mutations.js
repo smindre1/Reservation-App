@@ -174,9 +174,12 @@ export const UPDATE_SCHEDULE_HOURS = gql`
 `;
 
 export const CREATE_INVENTORY = gql`
-  mutation createInventory($ItemCategory: Int!, $Items: [ItemData!]) {
-    createInventory(ItemCategory: $ItemCategory, Items: $Items) {
+  mutation createInventory($ItemCategory: Int!, $Rooms: [LinkedRoomData]!, $Items: [ItemData!]) {
+    createInventory(ItemCategory: $ItemCategory, Rooms: $Rooms, Items: $Items) {
       ItemCategory
+      Rooms{
+        Room
+      }
       Items {
         Item
         Prices {

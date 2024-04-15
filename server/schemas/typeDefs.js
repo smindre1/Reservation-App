@@ -51,7 +51,12 @@ const typeDefs = `
 
     type Inventory {
         ItemCategory: Int!
+        Rooms: [LinkedRooms]!
         Items: [Item]!
+    }
+
+    type LinkedRooms {
+        Room: Int!
     }
 
     type Item {
@@ -109,6 +114,11 @@ const typeDefs = `
 
     type timeSlots {
         time: Int!
+        availability: [rooms]
+    }
+
+    type rooms {
+        room: Int!
         available: Boolean!
     }
 
@@ -118,14 +128,19 @@ const typeDefs = `
         open: Boolean!
     }
 
-    input timeSlotData {
-        time: Int!
-        available: Boolean!
-    }
-
     input DayPlanData {
         day: Int!
         timeSlots: timeSlotData!
+    }
+
+    input timeSlotData {
+        time: Int!
+        availability: [roomList]!
+    }
+
+    input roomList {
+        room: Int!
+        available: Boolean!
     }
 
     input serviceData {
@@ -150,7 +165,12 @@ const typeDefs = `
 
     input InventoryList {
         ItemCategory: Int!
+        Rooms: [LinkedRoomsData]!
         Items: [ItemData]!
+    }
+
+    input LinkedRoomsData {
+        Room: Int!
     }
 
     input ItemData {
@@ -168,7 +188,7 @@ const typeDefs = `
         me: User
         reservations: [Reservation]
         reservation(reservationId: ID!): Reservation
-        schedule(year: Int!, month: String!, day: Int!): [timeSlots]
+        schedule(year: Int!, month: String!, day: Int!, itemCategory: Int!): [DayPlans]
         calendar: [Calendar]
         getCalendarMonth(year: Int!, month: String!): [Days]
         getInventoryList: [Inventory]
@@ -202,7 +222,7 @@ const typeDefs = `
 
         scheduleHours(open: Int!, close: Int!): Schedule
 
-        createInventory(ItemCategory: Int!, Items: [ItemData]!): Inventory
+        createInventory(ItemCategory: Int!, Rooms: [LinkedRoomsData]! Items: [ItemData]!): Inventory
 
         addToInventory(ItemCategory: Int!, Item: ItemData!): Inventory
 

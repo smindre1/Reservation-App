@@ -15,10 +15,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     February: [{
@@ -31,10 +37,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     March: [{
@@ -47,10 +59,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     April: [{
@@ -63,10 +81,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     May: [{
@@ -79,10 +103,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     June: [{
@@ -95,10 +125,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     July: [{
@@ -111,10 +147,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     August: [{
@@ -127,10 +169,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     September: [{
@@ -143,10 +191,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     October: [{
@@ -159,10 +213,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     November: [{
@@ -175,10 +235,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
     December: [{
@@ -191,10 +257,16 @@ const scheduleSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            available: {
-                type: Boolean,
-                required: true,
-            }
+            availability: [{
+                room: {
+                    type: Number,
+                    required: true,
+                },
+                available: {
+                    type: Boolean,
+                    required: true,
+                }
+            }]
         }],
     }],
 });

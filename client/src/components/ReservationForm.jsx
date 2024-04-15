@@ -162,7 +162,7 @@ const ReservationForm = () => {
         </div>
 
         <div ref={appointmentTimeId}>
-          <Calendar ref={calendarId} year="" month="" day="" timeslots="" schedule="true"/>
+          <Calendar ref={calendarId} year="" month="" day="" timeslots="" itemCategory={1} schedule="true"/>
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div>
 

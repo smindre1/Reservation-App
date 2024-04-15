@@ -18,9 +18,10 @@ const resolvers = {
     reservation: async (parent, { reservationId }) => {
       return Reservation.findById(reservationId);
     },
-    schedule: async (parent, { year, month, day }) => {
+    schedule: async (parent, { year, month, day, itemCategory }) => {
+      console.log("schedule resolver test 1");
       const schedule = await Schedule.findOne({year});
-
+      console.log("schedule resolver test 2");
       if(!schedule) {
         throw new Error('Schedule Not Found!');
       }
@@ -36,7 +37,28 @@ const resolvers = {
         throw new Error('Day Not Found!');
       }
 
-      const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.available == true);
+      const inventory = await Inventory.find({ItemCategory: itemCategory});
+      const rooms = inventory[0].Rooms;
+
+      const findRooms = () => {
+        let selectedSchedule = [...dayPlans.timeSlots];
+        let availableRoomTimes = [];
+        for(let i=0; i < rooms.length; i++) {
+          let timeSlotList = selectedSchedule.filter((timeSlot) => 
+            rooms[i].Room == timeSlot.availability[rooms[i].Room - 1].room && timeSlot.availability[rooms[i].Room - 1].available == true
+          );
+          // console.log(timeSlotList, "filtered");
+          // availableRoomTimes[rooms[i].Room] = timeSlotList;
+          availableRoomTimes.push({timeSlots: timeSlotList});
+        }
+        // console.log(availableRoomTimes, "filtered2");
+        return availableRoomTimes;
+      }
+
+      const availableTimeSlots = await findRooms();
+
+      // console.log(availableTimeSlots, "lol");
+      // const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.availability[itemCategory] == true && );
 
       return availableTimeSlots;
     },
@@ -281,8 +303,8 @@ const resolvers = {
       
       // return updatedSchedule;
     },
-    createInventory: async (parent, { ItemCategory, Items }) => {
-      const inventory = await Inventory.create({ ItemCategory, Items });
+    createInventory: async (parent, { ItemCategory, Rooms, Items }) => {
+      const inventory = await Inventory.create({ ItemCategory, Rooms, Items });
       return inventory;
     },
     addToInventory: async (parent, { ItemCategory, Item }) => {
