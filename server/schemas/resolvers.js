@@ -1,4 +1,4 @@
-const { User, Reservation, Calendar, Schedule } = require("../models");
+const { User, Reservation, Calendar, Schedule, Inventory } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -55,6 +55,12 @@ const resolvers = {
       }
 
       return monthData;
+    },
+    getInventoryList: async () => {
+      return await Inventory.find();
+    },
+    getItemList: async (parent, ItemCategory) => {
+      return await Inventory.findOne({ItemCategory});
     },
   },
 
@@ -275,7 +281,29 @@ const resolvers = {
       
       // return updatedSchedule;
     },
+    createInventory: async (parent, { ItemCategory, Items }) => {
+      const inventory = await Inventory.create({ ItemCategory, Items });
+      return inventory;
+    },
+    addToInventory: async (parent, { ItemCategory, Item }) => {
+
+      let inventory = await Inventory.find({ItemCategory});
+      // console.log(inventory, "inventory");
+      let originalInventory = inventory[0][Items];
+      let newInventory = [...originalInventory, Item];
+
+      const updatedInventory = await Calendar.findOneAndUpdate({ ItemCategory }, {Items: newInventory});
+      return updatedInventory;
+    },
+    removeFromInventory: async (parent, { ItemCategory, Item }) => {
+      const updatedInventory = await Inventory.findOneAndUpdate({ ItemCategory },
+        { $pull: { Items: Item } },
+        {new:true});
+
+      return updatedInventory;
+    },
   },
 };
+
 
 module.exports = resolvers;

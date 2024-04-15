@@ -49,6 +49,21 @@ const typeDefs = `
         user: User
     }
 
+    type Inventory {
+        ItemCategory: Int!
+        Items: [Item]!
+    }
+
+    type Item {
+        Item: String!
+        Prices: [ItemInfo]!
+    }
+
+    type ItemInfo {
+        time: Int!
+        cost: Int!
+    }
+
     type Calendar {
         year: Int!
         January: [Days]!
@@ -133,6 +148,21 @@ const typeDefs = `
         billingAddress: String!
     }
 
+    input InventoryList {
+        ItemCategory: Int!
+        Items: [ItemData]!
+    }
+
+    input ItemData {
+        Item: String!
+        Prices: [ItemPriceData]!
+    }
+
+    input ItemPriceData {
+        time: Int!
+        cost: Int!
+    }
+
     type Query {
         users: [User]
         me: User
@@ -141,7 +171,8 @@ const typeDefs = `
         schedule(year: Int!, month: String!, day: Int!): [timeSlots]
         calendar: [Calendar]
         getCalendarMonth(year: Int!, month: String!): [Days]
-
+        getInventoryList: [Inventory]
+        getItemList(ItemCategory: Int!): [Inventory]
     }
 
     type Mutation {
@@ -171,6 +202,11 @@ const typeDefs = `
 
         scheduleHours(open: Int!, close: Int!): Schedule
 
+        createInventory(ItemCategory: Int!, Items: [ItemData]!): Inventory
+
+        addToInventory(ItemCategory: Int!, Item: ItemData!): Inventory
+
+        removeFromInventory(ItemCategory: Int!, Item: String!): Inventory
     }
 `;
 

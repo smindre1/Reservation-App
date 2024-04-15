@@ -172,3 +172,48 @@ export const UPDATE_SCHEDULE_HOURS = gql`
     }
   }
 `;
+
+export const CREATE_INVENTORY = gql`
+  mutation createInventory($ItemCategory: Int!, $Items: [ItemData!]) {
+    createInventory(ItemCategory: $ItemCategory, Items: $Items) {
+      ItemCategory
+      Items {
+        Item
+        Prices {
+          time
+          cost
+        }
+      }
+    }
+  }
+`;
+
+export const ADD_TO_INVENTORY = gql`
+  mutation addToInventory($ItemCategory: Int!, $Item: ItemData!) {
+    addToInventory(ItemCategory: $ItemCategory, Item: $Item) {
+      ItemCategory
+      Items {
+        Item
+        Prices {
+          time
+          cost
+        }
+      }
+    }
+  }
+`;
+
+export const REMOVE_FROM_INVENTORY = gql`
+  mutation removeFromInventory($ItemCategory: Int!, $Item: String!) {
+    removeFromInventory(ItemCategory: $ItemCategory, Item: $Item) {
+      ItemCategory
+      Items {
+        Item
+        Prices {
+          time
+          cost
+        }
+      }
+    }
+  }
+`;

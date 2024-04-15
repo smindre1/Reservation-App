@@ -156,3 +156,32 @@ export const GET_SCHEDULE = gql`
     }
   }
 `;
+
+export const GET_INVENTORY_LIST = gql`
+  query getInventoryList {
+    getInventoryList {
+      ItemCategory
+      Items {
+        Item
+        Prices {
+          time
+          cost
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ITEM_LIST = gql`
+  query getItemList($ItemCategory: Int!) {
+    getItemList(ItemCategory: $ItemCategory) {
+      Items {
+        Item
+        Prices {
+          time
+          cost
+        }
+      }
+    }
+  }
+`;
