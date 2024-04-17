@@ -213,6 +213,19 @@ body {
     background-color: #28e6dd;
 }
 
+.selectedTab {
+    background-color: #28e6dd;
+}
+
+.roomTab {
+    border: solid 2px #dfdfdf;
+    padding: 2px 8px 2px 8px;
+}
+
+.roomTab:hover {
+    cursor: pointer;
+}
+
 .dateTool {
     display: flex;
     flex-direction: row;

@@ -19,9 +19,7 @@ const resolvers = {
       return Reservation.findById(reservationId);
     },
     schedule: async (parent, { year, month, day, itemCategory }) => {
-      console.log("schedule resolver test 1");
       const schedule = await Schedule.findOne({year});
-      console.log("schedule resolver test 2");
       if(!schedule) {
         throw new Error('Schedule Not Found!');
       }
@@ -47,8 +45,7 @@ const resolvers = {
           let timeSlotList = selectedSchedule.filter((timeSlot) => 
             rooms[i].Room == timeSlot.availability[rooms[i].Room - 1].room && timeSlot.availability[rooms[i].Room - 1].available == true
           );
-          // console.log(timeSlotList, "filtered");
-          // availableRoomTimes[rooms[i].Room] = timeSlotList;
+
           availableRoomTimes.push({timeSlots: timeSlotList});
         }
         // console.log(availableRoomTimes, "filtered2");
@@ -57,7 +54,6 @@ const resolvers = {
 
       const availableTimeSlots = await findRooms();
 
-      // console.log(availableTimeSlots, "lol");
       // const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.availability[itemCategory] == true && );
 
       return availableTimeSlots;

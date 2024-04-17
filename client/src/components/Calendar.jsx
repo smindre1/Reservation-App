@@ -59,7 +59,7 @@ const Calendar = forwardRef((props, ref) => {
 
             //open && targetYear > todayYear  ||  open && targetYear == todayYear && targetMonth > todayMonth || open && targetYear == todayYear && targetMonth == todayMonth && targetDay > todaysDay
             if(target === true && loadYear > today.getFullYear() || target === true && loadYear == today.getFullYear() && months.indexOf(loadMonth) > today.getMonth() || target === true && loadYear == today.getFullYear() && months.indexOf(loadMonth) == today.getMonth() && loadDay > today.getDate()) {
-                return(<Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} itemCategory={props.itemCategory} setTrigger={setUpdated}/>)
+                return(<Schedule ref={scheduleId} year={loadYear} month={loadMonth} day={loadDay} duration={props.duration} itemCategory={props.itemCategory} setTrigger={setUpdated}/>)
             } else {
                 return(<p className='schedule'>No available timeslots for this date.<br></br>(Please select another day)</p>)
             }
