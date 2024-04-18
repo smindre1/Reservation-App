@@ -20,6 +20,7 @@ const ReservationForm = () => {
   //This is used to make different keys for each service the client is considering purchasing.
   const [serviceKey, setServiceKey] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
+  const [itemCategory, setItemCategory] = useState(1);
 
   //Used for the popup, but I plan to redirect page so it may not be necessary.
   const [success, setSuccess] = useState(false);
@@ -43,8 +44,14 @@ const ReservationForm = () => {
   // }, [loadDuration, checkOptions])
 
   const checkServiceInfo = (serviceName) => {
+    //Duration is changed to reset Calendar and Schedule
+    setDuration("");
+    // console.log(serviceName, "name?");
     setService(serviceName);
     const info = Services.filter((item) => serviceName == item.Item);
+    const itemNumber = info[0].ItemCategory;
+    setItemCategory(itemNumber);
+    // console.log(itemNumber, "info");
     setOptions(info[0]?.Prices);
     setCheckOptions(true);
   }
@@ -112,6 +119,7 @@ const ReservationForm = () => {
     const allAddOns = [{addition: null, price: null}];
     //Reformatting HTML attribute into JSON array
     let timeslots = calendarId.current.childNodes[1].getAttribute("value");
+    let roomNumber = Number(calendarId.current.childNodes[1].getAttribute("room"));
     timeslots = timeslots.replaceAll(',', ', ');
     timeslots = `[${timeslots}]`;
     timeslots = JSON.parse(timeslots);
@@ -123,7 +131,7 @@ const ReservationForm = () => {
       e.stopPropagation();
     } else {
       //The payment is being left as a default N/A for testing
-      const reservationFormData = { name: name, email: email, phone: number, day: date, appointmentTime: timeslots, services: [{type: loadService, client: serviceClient, price: intPrice}], specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
+      const reservationFormData = { name: name, email: email, phone: number, day: date, appointmentTime: timeslots, services: [{type: loadService, client: serviceClient, price: intPrice}], specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"}, room: roomNumber };
 
       try {
         const { data } = await addReservation({
@@ -139,7 +147,12 @@ const ReservationForm = () => {
       setNumber("");
       // setServices([]);
       localStorage.removeItem("services");
-      setSpecialRequests("Invalid");
+      setCheckOptions(false);
+      setOptions([]);
+      setDuration("");
+      setService("");
+      setServiceClient("");
+      setSpecialRequests("");
       //State change initiates popup
       setSuccess(true);
     }
@@ -194,7 +207,7 @@ const ReservationForm = () => {
         </div>
 
         {loadDuration ? <div ref={appointmentTimeId}>
-          <Calendar ref={calendarId} year="" month="" day="" timeslots="" duration={loadDuration} itemCategory={1} schedule="true"/>
+          <Calendar ref={calendarId} year="" month="" day="" timeslots="" duration={loadDuration} itemCategory={itemCategory} schedule="true"/>
           <p className="errorTxt hide">Please choose an available appointment time</p>
         </div> : null}
 

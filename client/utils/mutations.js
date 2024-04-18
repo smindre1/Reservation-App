@@ -48,8 +48,8 @@ export const DEL_EMPLOYEE = gql`
 `;
 
 export const ADD_RESERVATION = gql`
-  mutation addReservation($name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: [Int!], $services: [serviceData!], $specialRequests: String, $payment: paymentData!) {
-    addReservation(name: $name, email: $email, phone: $phone, day: $day, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment) {
+  mutation addReservation($name: String!, $email: String!, $phone: String!, $day: String!, $appointmentTime: [Int!], $services: [serviceData!], $specialRequests: String, $payment: paymentData!, $room: Int!) {
+    addReservation(name: $name, email: $email, phone: $phone, day: $day, appointmentTime: $appointmentTime, services: $services, specialRequests: $specialRequests, payment: $payment, room: $room) {
       _id
       name
       email

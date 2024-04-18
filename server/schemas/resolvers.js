@@ -123,8 +123,46 @@ const resolvers = {
       return { token, user };
     },
     addReservation: async (parent, context) => {
+      const {room} = context;
+      delete context.room;
       const reservation = await Reservation.create(context);
-      console.log(context, "resolver context");
+      // console.log(context.appointmentTime, "resolver context");
+      
+      const {day, appointmentTime} = context;
+      const date = day.split(", ");
+      const newDate = date[0].split(" ");
+
+      const year = Number(date[1]);
+      const month = newDate[0];
+      const dayOfMonth = Number(newDate[1]);
+      // console.log("year: ", year, "Month: ", month, "Day: ", dayOfMonth);
+      const schedule = await Schedule.findOne({year});
+      // console.log(schedule[month], "schedule");
+
+      let monthData = schedule[month];
+      let dayPlans = monthData.find((dayPlan) => dayPlan.day == dayOfMonth);
+    
+
+
+
+      dayPlans.timeSlots.map((timeSlot) => {
+        for(let i=0; i<appointmentTime.length; i++) {
+            if(timeSlot.time == appointmentTime[i]) {
+            timeSlot.availability[room-1].available = false;
+          }
+        }
+      });
+
+      // for(let i=0; i<appointmentTime.length; i++) {
+      //   console.log(dayPlans.timeSlots[appointmentTime[i]], "timeslots", appointmentTime[i]);
+      // }
+      
+      //[day-1] because that is the difference between the day and the day's place in the month array
+
+      monthData[dayOfMonth-1].timeSlots = dayPlans.timeSlots;
+
+      console.log(monthData[dayOfMonth-1][appointmentTime[0]], "hmm");
+      const updatedSchedule = await Schedule.findOneAndUpdate({ year }, {[month]: monthData});
 
       return reservation;
     },
