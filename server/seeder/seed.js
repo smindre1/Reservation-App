@@ -135,36 +135,91 @@ const buildSchedule = async () => {
 }
 
 
+
 //Process exit code 1 means failure, 0 means success
 db.once('open', async () => {
   try {
-    // await Calendar.find() ? console.log('The Calendar has already been seeded') : await buildCalendar();
-    // Schedule.find() ? console.log('The Schedule has already been seeded') : await buildSchedule();
 
-    // const testing = Schedule.find();
-    // console.log(testing[0], "Test");
-    // testing[0] ? console.log("Stuff") : console.log("nothing");
-    console.log("Now Building Inventories");
-    await buildInventories();
-    console.log("Inventories Done");
+  // Check if there are any documents in the Calendar collection
+  let calendarCount = 0;
+  await Calendar.countDocuments({})
+  .then(count => {
+      if (count > 0) {
+          calendarCount = count;
+          console.log('Data already exists in the Calendar collection.');
+      } else {
+          console.log('No data found in the Calendar collection.');
+      }
+  })
+  .catch(err => {
+      console.error(err);
+  });
 
+  //Seeds an Calendar database
+  if(calendarCount < 2) {
     console.log("Now Building Calendar");
     await buildCalendar();
     console.log("Calendar Done");
-
-    console.log("Now Building Schedule");
-    await buildSchedule();
-    console.log("Schedule Done");
 
     let testCalendarYear = buildTestCalendarYear(1000);
     testCalendarYear ? console.log("Now Building Test Calendar Year") : null;
     await Calendar.create(testCalendarYear);
     testCalendarYear ? console.log("Test Calendar Year Done") : null;
+  } else {
+    console.log("Calendar has not been re-seeded")}
 
-    let testScheduleYear = buildTestScheduleYear(1000);
-    testScheduleYear ? console.log("Now Building Test Schedule Year") : null;
-    await Schedule.create(testScheduleYear);
-    testScheduleYear ? console.log("Test Schedule Year Done") : null;
+
+  // Check if there are any documents in the Schedule collection
+  let scheduleCount = 0;
+  await Schedule.countDocuments({})
+  .then(count => {
+      if (count > 0) {
+          scheduleCount = count;
+          console.log('Data already exists in the Schedule collection.');
+      } else {
+          console.log('No data found in the Schedule collection.');
+      }
+  })
+  .catch(err => {
+      console.error(err);
+  });
+
+  //Seeds a Schedule database
+  if(scheduleCount < 3) {
+      console.log("Now Building Schedule");
+      await buildSchedule();
+      console.log("Schedule Done");
+      //Seeds a test schedule
+      let testScheduleYear = buildTestScheduleYear(1000);
+      testScheduleYear ? console.log("Now Building Test Schedule Year") : null;
+      await Schedule.create(testScheduleYear);
+      testScheduleYear ? console.log("Test Schedule Year Done") : null;
+  } else {
+      console.log("Schedule has not been re-seeded")}
+
+  // Check if there are any documents in the Inventory collection
+  let inventoryCount = 0;
+  await Inventory.countDocuments({})
+  .then(count => {
+      if (count > 0) {
+          inventoryCount = count;
+          console.log('Data already exists in the Inventory collection.');
+      } else {
+          console.log('No data found in the Inventory collection.');
+      }
+  })
+  .catch(err => {
+      console.error(err);
+  });
+
+  //Seeds an Inventory database
+  if(inventoryCount < 2) {
+    console.log("Now Building Inventories");
+    await buildInventories();
+    console.log("Inventories Done");
+  } else {
+    console.log("Inventory has not been re-seeded")}
+
 
   } catch (err) {
     console.error(err);

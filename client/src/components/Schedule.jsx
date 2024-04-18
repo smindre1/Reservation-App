@@ -6,6 +6,7 @@ import "../../src/index.css";
 const Schedule = forwardRef((props, scheduleId) => {
 
     const [loadTimeSlot, setTimeSlot] = useState([]);
+    const [loadEndTime, setEndTime] = useState(null);
     const [roomOne, setRoomOne] = useState(true);
     const [roomTwo, setRoomTwo] = useState(false);
     const { loading: wait, error, data: schedule} = useQuery(GET_SCHEDULE, {variables: {year: Number(props.year), month: props.month, day: Number(props.day), itemCategory: Number(props.itemCategory)}});
@@ -15,11 +16,45 @@ const Schedule = forwardRef((props, scheduleId) => {
 // 38, 47, 53
     useEffect(() => {
         props.setTrigger(true);
+        loadTimeSlot.length > 0 ? checkEndTime() : null;
+
+        const checkDuration = () => {
+            const timeCount = props.duration/15;
+            const time = timeCount%1;
+            let timeslots = [...loadTimeSlot];
+
+            if(time == 0) {
+                let count = Number(loadTimeSlot[0]) + 1;
+                for(let i=0; i < timeCount - 1; i++) {
+                    timeslots = [...timeslots, `${count}`];
+                    count = count + 1;
+                }
+                // console.log(timeslots, "rounded");
+                setTimeSlot(timeslots);
+            } else {
+                let roundedTime = Math.ceil(timeCount);
+                let count = Number(loadTimeSlot[0]) + 1;
+                for(let i=0; i < roundedTime - 1; i++) {
+                    timeslots = [...timeslots, `${count}`];
+                    count = count + 1;
+                }
+                // console.log(timeslots, "rounded");
+                setTimeSlot(timeslots);
+
+                // console.log(roundedTime, loadTimeSlot, "rounded");
+                const remainder = Math.round(time*15);
+            }
+        }
+        console.log(loadTimeSlot, "loaded timeslots");
+        loadTimeSlot.length == 1 ? checkDuration() : null;
     }, [loadTimeSlot])
 
-    // useEffect(() => {
-    //     !wait ? console.log(schedule?.schedule[0], "Schedule ...") : null;
-    // }, [wait])
+    //If the user changes the duration the values will be reset
+    useEffect(() => {
+        // !wait ? console.log(schedule?.schedule[0], "Schedule ...") : null;
+        setTimeSlot([]);
+        setEndTime(null);
+    }, [props.duration])
 
     const checkSchedule = (num) => {
         if(!wait) {
@@ -28,6 +63,21 @@ const Schedule = forwardRef((props, scheduleId) => {
             let results = (scheduleOne - time) > 0 ? true : false;
             return results;
         }
+    }
+
+    const checkEndTime = () => {
+        const timeCount = props.duration/15;
+        const time = timeCount%1;
+        if(time == 0) {
+            setEndTime(timeslotIndex[Number(loadTimeSlot[0]) + timeCount]);
+        } else {
+        let roundedTime = timeslotIndex[Number(loadTimeSlot[0]) + Math.floor(timeCount)]
+        const remainder = Math.round(time*15);
+        let pattern = `${roundedTime[3]}${roundedTime[4]}`;
+        let minutes = Number(pattern) + remainder;
+        minutes < 10 ? minutes = `0${minutes}` : minutes = String(Number(minutes));
+        const correctTime = roundedTime.replace(pattern, minutes);
+        setEndTime(correctTime);}
     }
 
     const adjustSchedule = (num) => {
@@ -83,18 +133,18 @@ const Schedule = forwardRef((props, scheduleId) => {
         newTimeSlotList.forEach((obj) => finalTimeSlotList.push(obj.time));
 
         return(finalTimeSlotList.map((time) => {
-            return <p className={loadTimeSlot == time ? "timeslot selectedTime" : "timeslot"} onClick={(e) => {setTimeSlot([e.target.getAttribute("value")])}} value={time} key={time}>{timeslotIndex[time]}</p>
+            return <p className={loadTimeSlot[0] == time ? "timeslot selectedTime" : "timeslot"} onClick={(e) => {setTimeSlot([e.target.getAttribute("value")])}} value={time} key={time}>{timeslotIndex[time]}</p>
         }))
         // return finalTimeSlotList;
     }
 
 
     return(
-        <div ref={scheduleId} timeslots={loadTimeSlot} className='schedule'>
+        <div ref={scheduleId} value={loadTimeSlot} className='schedule'>
             {wait ? <h2>Loading...</h2> : null}
 
             <p>Please select an appointment time.</p>
-            {loadTimeSlot.length > 0 ? <p>Selected: {timeslotIndex[Math.min(...loadTimeSlot)]} to {timeslotIndex[Math.max(...loadTimeSlot)]} (EST)</p> : <p>No Time Has Been Selected</p>}
+            {loadTimeSlot.length > 0 && loadEndTime ? <p>Selected: {timeslotIndex[Math.min(...loadTimeSlot)]} to {loadEndTime} (EST)</p> : <p>No Time Has Been Selected</p>}
             {roomOne && checkSchedule(0) ? 
                 <div ref={scheduleId} value={loadTimeSlot} room={1} className='listedTimeSlots'>
                     {schedule?.schedule[0] != [] ? adjustSchedule(0) : <h2>Loading...</h2>}

@@ -88,7 +88,7 @@ body {
     background-color: #f0f0f0;
     padding: 9px 18px 9px 18px;
     margin: 0 0 18px 0;
-        width: fit-content;
+    width: fit-content;
     width: -moz-fit-content;
     border: solid #cccccc 2px;
 }
@@ -96,6 +96,13 @@ body {
 /* .clientName {
 
 } */
+
+.formInputDiv {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    width: -moz-fit-content;
+}
 
 .cardText {
     font-size: 16px;

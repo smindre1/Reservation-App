@@ -2,16 +2,21 @@ import { useState, useRef, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_RESERVATION } from "../../utils/mutations";
 import Calendar from "./Calendar";
+import Services from "../assets/Services";
 // import Popup from '../components/Popup';
 
 const ReservationForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
-  const [services, setServices] = useState([]);
-  const [serviceType, setServiceType] = useState("");
+  // const [services, setServices] = useState([]);
   const [serviceClient, setServiceClient] = useState("");
-  const [servicePrice, setServicePrice] = useState(0);
+
+  const [loadOptions, setOptions] = useState([]);
+  const [checkOptions, setCheckOptions] = useState(false);
+  const [loadService, setService] = useState("");
+  const [loadServicePrice, setServicePrice] = useState();
+  const [loadDuration, setDuration] = useState("");
   //This is used to make different keys for each service the client is considering purchasing.
   const [serviceKey, setServiceKey] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
@@ -27,9 +32,22 @@ const ReservationForm = () => {
   const specialRequestsId = useRef(null);
   const divId = useRef(null);
   const calendarId = useRef(null);
-  // const scheduleId = useRef(null);
+  const serviceDurationId = useRef(null);
 
   const [addReservation, { error, data }] = useMutation(ADD_RESERVATION);
+
+  // useEffect(() => {
+  //   console.log(loadDuration, "duartion");
+  //   checkOptions ? console.log(serviceDurationId.current.getAttribute("duration") || "meh", "fail") : console.log(serviceDurationId, "success");
+  //   console.log(loadServicePrice, "price");
+  // }, [loadDuration, checkOptions])
+
+  const checkServiceInfo = (serviceName) => {
+    setService(serviceName);
+    const info = Services.filter((item) => serviceName == item.Item);
+    setOptions(info[0]?.Prices);
+    setCheckOptions(true);
+  }
 
   const checkForm = () => {
     //Creates an array of each form field
@@ -41,7 +59,7 @@ const ReservationForm = () => {
         item.id.current.lastChild.classList.remove("hide");
       }
     });
-    if(calendarId.current.getAttribute("timeslots") == null || calendarId.current.getAttribute("year") == null) {
+    if(calendarId.current.childNodes[1].getAttribute("value") == null || calendarId.current.getAttribute("year") == null) {
       appointmentTimeId.current.firstChild.classList.add("error");
       appointmentTimeId.current.lastChild.classList.remove("hide");
     }
@@ -82,10 +100,9 @@ const ReservationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServices(JSON.parse(localStorage.getItem("services")));
+    // setServices(JSON.parse(localStorage.getItem("services")));
     checkForm();
-    const intPrice = Number(servicePrice);
-    console.log(typeof intPrice, "price Int?");
+    const intPrice = Number(loadServicePrice);
     setServicePrice(intPrice)
     //This is the date and time(s) taken from the Calendar/Schedule components
     const year = calendarId.current.getAttribute("year");
@@ -93,19 +110,20 @@ const ReservationForm = () => {
     const day = calendarId.current.getAttribute("day");
     const date = `${month} ${day}, ${year}`;
     const allAddOns = [{addition: null, price: null}];
-    let timeslots = calendarId.current.getAttribute("timeslots");
+    //Reformatting HTML attribute into JSON array
+    let timeslots = calendarId.current.childNodes[1].getAttribute("value");
     timeslots = timeslots.replaceAll(',', ', ');
     timeslots = `[${timeslots}]`;
     timeslots = JSON.parse(timeslots);
     //An empty field will prevent the form from submitting
-    if(name == "" || email == "" || number == "" || day == "") {
+    if(name == "" || email == "" || number == "" || day == "" || loadService == "" || timeslots.length == 0) {
 
     // if(name == "") {
       setSuccess(false);
       e.stopPropagation();
     } else {
       //The payment is being left as a default N/A for testing
-      const reservationFormData = { name: name, email: email, phone: number, day: date, appointmentTime: timeslots, services: [{type: serviceType, client: serviceClient, price: intPrice}], specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
+      const reservationFormData = { name: name, email: email, phone: number, day: date, appointmentTime: timeslots, services: [{type: loadService, client: serviceClient, price: intPrice}], specialRequests: specialRequests, payment: {cardOwner: "Bob", cardNumber: 1000, cardExpiration: 1000, securityCode: 123, billingAddress: "Confusion"} };
 
       try {
         const { data } = await addReservation({
@@ -119,7 +137,7 @@ const ReservationForm = () => {
       setName("");
       setEmail("");
       setNumber("");
-      setServices([]);
+      // setServices([]);
       localStorage.removeItem("services");
       setSpecialRequests("Invalid");
       //State change initiates popup
@@ -149,22 +167,36 @@ const ReservationForm = () => {
       <div>
 
         {/* Services */}
-        <div>
-          <input className="formFields" type="text" placeholder="Type of Service" autoComplete="off" value={serviceType} onChange={(e) => {setServiceType(e.target.value)}} />
+        <div className="formInputDiv">
+          <select className="formFields" title="service" name="type" value={loadService} onChange={(e) => {checkServiceInfo(e.target.value);}}>
+            <option  value="" disabled>-Select Massage-</option>
+            {Services.map((item) => {
+                return(<option key={item.Item} value={item.Item} itemcategory={item.itemCategory}>{item.Item}</option>)
+            })}
+          </select>
+
+          {checkOptions ? 
+          <select className="formFields" ref={serviceDurationId} title="duration" name="type" value={loadDuration} price={loadServicePrice} onChange={(e) => {setDuration(e.target.value); setServicePrice(e.target.selectedOptions[0].getAttribute("price"))}}>
+            <option value="" disabled>-Select Duration-</option>
+            {loadOptions.map((choice) => {
+                return(<option key={choice.time} value={choice.time} price={choice.cost}>{choice.time} Minutes</option>)
+            })}
+          </select>
+            : null}
           
           <input className="formFields" type="text" placeholder="Client for Service" autoComplete="off" value={serviceClient} onChange={(e) => {setServiceClient(e.target.value)}} />
           
-          <input className="formFields" type="text" placeholder="Price" autoComplete="off" value={servicePrice} onChange={(e) => {setServicePrice(e.target.value)}} />
+          {/* <input className="formFields" type="text" placeholder="Price" autoComplete="off" value={servicePrice} onChange={(e) => {setServicePrice(e.target.value)}} /> */}
         </div>
 
         <div ref={specialRequestsId}>
           <input className="formFields" type="text" placeholder="Special Requests" autoComplete="off" value={specialRequests} onChange={(e) => {setSpecialRequests(e.target.value)}} />
         </div>
 
-        <div ref={appointmentTimeId}>
-          <Calendar ref={calendarId} year="" month="" day="" timeslots="" duration={60} itemCategory={1} schedule="true"/>
+        {loadDuration ? <div ref={appointmentTimeId}>
+          <Calendar ref={calendarId} year="" month="" day="" timeslots="" duration={loadDuration} itemCategory={1} schedule="true"/>
           <p className="errorTxt hide">Please choose an available appointment time</p>
-        </div>
+        </div> : null}
 
         <button className="formBtn" type="submit">Submit</button>
       </div>

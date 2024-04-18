@@ -124,6 +124,8 @@ const resolvers = {
     },
     addReservation: async (parent, context) => {
       const reservation = await Reservation.create(context);
+      console.log(context, "resolver context");
+
       return reservation;
     },
     updateReservation: async (parent, context) => {

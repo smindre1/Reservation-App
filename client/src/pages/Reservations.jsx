@@ -3,6 +3,7 @@ import { GET_RESERVATIONS } from '../../utils/queries';
 import { useState, useEffect } from 'react';
 import TimeSlotIndex from "../assets/TimeSlotIndex";
 import "../../src/index.css";
+import Services from '../assets/Services';
 
 const Reservations = () => {
 
@@ -13,6 +14,10 @@ const Reservations = () => {
     useEffect(() => {
         reservationSchedule();
     }, [wait])
+
+    // useEffect(() => {
+    //     loadRoster ? console.log(loadRoster, "roster") : null;
+    // }, [loadRoster])
 
     useEffect(() => {
         //Redirect to the clicked reservation's page
@@ -39,6 +44,20 @@ const Reservations = () => {
         setParam(e.target.parentElement.getAttribute("reservationid") || e.target.getAttribute("reservationid"));
     }
 
+    const findDuration = (services) => {
+        const name = services[0].type;
+        const cost = services[0].price;
+        const serviceData = Services.filter((item) => item.Item == name);
+        const prices = serviceData[0]?.Prices;
+        const ratio = prices ? prices.filter((rate) => rate?.cost == cost) : null;
+        if(ratio) {
+            return ratio[0].time;
+        } else {
+            return "N/A"
+        }
+        
+    }
+
     return(
         <div className='center'>
             {wait ? <h2>Loading...</h2> : null}
@@ -49,7 +68,7 @@ const Reservations = () => {
             {loadRoster.map((reservation) => {
                 return (
                 <div className='clientReservationCard' key={reservation._id} reservationid={reservation._id} onClick={recordId}>
-                    <p className='cardText'>{TimeSlotIndex[reservation?.appointmentTime] || "none"} (Appointment Time)</p>
+                    <p className='cardText'>{TimeSlotIndex[reservation?.appointmentTime[0]] || "none"} (Appointment Time: {findDuration(reservation?.services)} Minutes)</p>
                     <div className='flexRow'>
                         <section>
                             <p className='sectionLabel bold'>Client's Name</p>
@@ -69,7 +88,7 @@ const Reservations = () => {
 
                     {reservation.services.map((service) => {
                         return (
-                        <div className='serviceItemCard'>
+                        <div key={service.client} className='serviceItemCard'>
                             <p className='cardText bold'>{service.type}</p>
                             <p className='cardText'>For: {service.client}</p>
                             <p className='cardText'>Price: ${service.price}</p>
