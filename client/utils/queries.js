@@ -149,7 +149,7 @@ export const GET_CALENDAR_MONTH = gql`
 `;
 
 export const GET_SCHEDULE = gql`
-  query schedule($year: Int!, $month: String!, $day: Int!, $itemCategory: Int!) {
+  query schedule($year: Int!, $month: String!, $day: Int!, $itemCategory: Int) {
     schedule(year: $year, month: $month, day: $day, itemCategory: $itemCategory) {
       timeSlots {
         time

@@ -89,7 +89,7 @@ const Settings = () => {
   //Operation Two: =======================================================================================
   useEffect(() => {
     if (!loadingBusinessHours) {
-      const times = schedule.schedule.map((timeSlot) => {
+      const times = schedule.schedule[0].timeSlots.map((timeSlot) => {
         return timeSlot.time;
       });
       const min = Math.min(...times);

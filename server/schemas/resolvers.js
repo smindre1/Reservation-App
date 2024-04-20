@@ -35,28 +35,34 @@ const resolvers = {
         throw new Error('Day Not Found!');
       }
 
-      const inventory = await Inventory.find({ItemCategory: itemCategory});
-      const rooms = inventory[0].Rooms;
+      if(itemCategory) {
+        const inventory = await Inventory.find({ItemCategory: itemCategory});
+        const rooms = inventory[0].Rooms;
 
-      const findRooms = () => {
-        let selectedSchedule = [...dayPlans.timeSlots];
-        let availableRoomTimes = [];
-        for(let i=0; i < rooms.length; i++) {
-          let timeSlotList = selectedSchedule.filter((timeSlot) => 
-            rooms[i].Room == timeSlot.availability[rooms[i].Room - 1].room && timeSlot.availability[rooms[i].Room - 1].available == true
-          );
+        const findRooms = () => {
+          let selectedSchedule = [...dayPlans.timeSlots];
+          let availableRoomTimes = [];
+          for(let i=0; i < rooms.length; i++) {
+            let timeSlotList = selectedSchedule.filter((timeSlot) => 
+              rooms[i].Room == timeSlot.availability[rooms[i].Room - 1].room && timeSlot.availability[rooms[i].Room - 1].available == true
+            );
 
-          availableRoomTimes.push({timeSlots: timeSlotList});
+            availableRoomTimes.push({timeSlots: timeSlotList});
+          }
+          return availableRoomTimes;
         }
-        // console.log(availableRoomTimes, "filtered2");
-        return availableRoomTimes;
+
+        const availableTimeSlots = await findRooms();
+        return availableTimeSlots;
+      } else {
+        const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.availability[0].available == true);
+        //To fit according to the typeDefs query return it needed to be formatted like the following
+        return [{timeSlots: availableTimeSlots}];
+        // return [{timeSlots: dayPlans.timeSlots}];
       }
-
-      const availableTimeSlots = await findRooms();
-
       // const availableTimeSlots = dayPlans.timeSlots.filter((timeSlot) => timeSlot.availability[itemCategory] == true && );
 
-      return availableTimeSlots;
+      // return availableTimeSlots;
     },
     calendar: async () => {
       return await Calendar.find();
@@ -126,7 +132,6 @@ const resolvers = {
       const {room} = context;
       delete context.room;
       const reservation = await Reservation.create(context);
-      // console.log(context.appointmentTime, "resolver context");
       
       const {day, appointmentTime} = context;
       const date = day.split(", ");
@@ -135,16 +140,11 @@ const resolvers = {
       const year = Number(date[1]);
       const month = newDate[0];
       const dayOfMonth = Number(newDate[1]);
-      // console.log("year: ", year, "Month: ", month, "Day: ", dayOfMonth);
       const schedule = await Schedule.findOne({year});
-      // console.log(schedule[month], "schedule");
 
       let monthData = schedule[month];
       let dayPlans = monthData.find((dayPlan) => dayPlan.day == dayOfMonth);
     
-
-
-
       dayPlans.timeSlots.map((timeSlot) => {
         for(let i=0; i<appointmentTime.length; i++) {
             if(timeSlot.time == appointmentTime[i]) {
@@ -152,16 +152,10 @@ const resolvers = {
           }
         }
       });
-
-      // for(let i=0; i<appointmentTime.length; i++) {
-      //   console.log(dayPlans.timeSlots[appointmentTime[i]], "timeslots", appointmentTime[i]);
-      // }
       
-      //[day-1] because that is the difference between the day and the day's place in the month array
-
+      //[dayOfMonth-1] because that is the difference between the day and the day's place in the month array
       monthData[dayOfMonth-1].timeSlots = dayPlans.timeSlots;
 
-      console.log(monthData[dayOfMonth-1][appointmentTime[0]], "hmm");
       const updatedSchedule = await Schedule.findOneAndUpdate({ year }, {[month]: monthData});
 
       return reservation;
@@ -202,17 +196,14 @@ const resolvers = {
     },
     updateScheduleDay: async (parent, { year, month, day, openingTime, closingTime }) => {
       const schedule = await Schedule.findOne({year});
-
       if(!schedule) {
         throw new Error('Schedule Not Found!');
       }
-
       let monthData = schedule[month];
 
       if(!monthData) {
         throw new Error('Month Not Found!');
       }
-
       let dayPlans = monthData.find((dayPlan) => dayPlan.day == day);
       if(!dayPlans) {
         throw new Error('Day Not Found!');
@@ -220,9 +211,15 @@ const resolvers = {
 
       dayPlans.timeSlots.map((timeSlot) => {
         if(timeSlot.time < openingTime || timeSlot.time > closingTime) {
-          timeSlot.available = false;
+          let range = timeSlot.availability.length;
+          for(let i=0; i<range; i++) {
+            timeSlot.availability[i].available = false;
+          }
         } else {
-          timeSlot.available = true;
+          let range = timeSlot.availability.length;
+          for(let i=0; i<range; i++) {
+            timeSlot.availability[i].available = true;
+          }
         }
       });
       //[day-1] because that is the difference between the day and the day's place in the month array
@@ -307,9 +304,15 @@ const resolvers = {
         newMonth.map((day) => {
           day.timeSlots.map((timeSlot) => {
             if(timeSlot.time < open || timeSlot.time > close) {
-              timeSlot.available = false;
+              let range = timeSlot.availability.length;
+              for(let i=0; i<range; i++) {
+                timeSlot.availability[i].available = false;
+              }
             } else {
-              timeSlot.available = true;
+              let range = timeSlot.availability.length;
+              for(let i=0; i<range; i++) {
+                timeSlot.availability[i].available = true;
+              }
             }
           });
         })

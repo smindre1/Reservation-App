@@ -134,10 +134,12 @@ export const UPDATE_DAY_STATUS = gql`
 export const UPDATE_SCHEDULE_DAY = gql`
   mutation updateScheduleDay($year: Int!, $month: String!, $day: Int!, $openingTime: Int!, $closingTime: Int!) {
     updateScheduleDay(year: $year,  month: $month, day: $day, openingTime: $openingTime, closingTime: $closingTime) {
-      day
       timeSlots {
         time
-        available
+        availability {
+          room
+          available
+        }
       }
     }
   }
@@ -166,7 +168,10 @@ export const UPDATE_SCHEDULE_HOURS = gql`
         day
         timeSlots {
           time
-          available
+          availability {
+            room
+            available
+          }
         }
       }
     }

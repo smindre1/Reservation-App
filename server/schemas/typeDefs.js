@@ -188,7 +188,7 @@ const typeDefs = `
         me: User
         reservations: [Reservation]
         reservation(reservationId: ID!): Reservation
-        schedule(year: Int!, month: String!, day: Int!, itemCategory: Int!): [DayPlans]
+        schedule(year: Int!, month: String!, day: Int!, itemCategory: Int): [DayPlans]
         calendar: [Calendar]
         getCalendarMonth(year: Int!, month: String!): [Days]
         getInventoryList: [Inventory]
